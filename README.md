@@ -3,7 +3,7 @@
 
 # Applied Regression <a href='https://educ265.de-barros.com/'><img src='files/icon-512.png' align="right" height="139" /></a>
 
-[EDUC 265 • Winter 2024](https://educ265.de-barros.com/)  
+[EDUC 265 • Winter 2025](https://educ265.de-barros.com/)  
 [Andreas de Barros](https://www.de-barros.com/) • School of Education •
 University of California, Irvine
 
@@ -24,7 +24,7 @@ University of California, Irvine
     [Quarto](https://quarto.org/) installation embedded in it.
     Otherwise, download and install [Quarto](https://quarto.org/)
     separately.
-2.  Open `educ265-24.Rproj` to open an [RStudio
+2.  Open `educ265-25.Rproj` to open an [RStudio
     Project](https://r4ds.hadley.nz/workflow-scripts.html#projects).
 3.  If it’s not installed already, R *should* try to install the [{renv}
     package](https://rstudio.github.io/renv/) when you open the RStudio
@@ -95,7 +95,7 @@ The pipeline does several major tasks:
 This page is largely inspired by [Andrew
 Heiss’s](https://www.andrewheiss.com/) site for his class [Program
 Evaluation for Public
-Service](https://github.com/andrewheiss/evalf22.classes.andrewheiss.com)
+Service](https://github.com/andrewheiss/evalsp23.classes.andrewheiss.com)
 as well as [Matt Blackwell’s](https://www.mattblackwell.org/) site for
 his class [Gov 50](https://github.com/mattblackwell/gov50-f23-site/). If
 you re-use any of the materials, please respect the licences (see below)
@@ -105,7 +105,7 @@ I am grateful for additional help and materials from [David
 Blazar](https://education.umd.edu/directory/david-blazar), [Fiona
 Burlig](https://www.fionaburlig.com/), [Arja
 Dayal](https://steinhardt.nyu.edu/arja-dayal), [Pierre de
-Galbert](https://scholar.harvard.edu/pierredegalbert/home), [Alejandro
+Galbert](https://education.brown.edu/people/pierre-de-galbert), [Alejandro
 Ganimian](https://www.alejandroganimian.com/), [Andrew
 Ho](https://www.gse.harvard.edu/directory/faculty/andrew-ho), [Justine
 Knebelmann](https://sites.google.com/view/justine-knebelmann/home),
