@@ -1,0 +1,18 @@
+---
+title: "Sample size calculations and clustered data"
+date: "2024-02-15"
+---
+
+## Readings
+
+- {{< fa book >}} Chapter 13.3 in *The Effect* [@Huntington-Klein:2021] 
+- {{< fa book >}} Chapter 6 in *Running Randomized Evaluations* [@glennerster_running_2013]
+- ~~{{< fa book >}} Chapter 15 in *Impact Evaluation in Practice* [@wb-eval]~~
+
+## Videos
+
+Video 33 from [this](https://www.youtube.com/watch?v=dfxrxqXVp0U&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=33) playlist accompanies Chapter 15 in *The Effect*. Watching it is optional.
+
+## Slides
+
+On the day of class, you will find my slides on Canvas. 

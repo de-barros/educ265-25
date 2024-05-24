@@ -1,0 +1,53 @@
+---
+title: "Overview"
+---
+
+The main goals of this class are to help you design, critique, code, and interpret rigorous regression analyses that investigate causal relationships. Each type of assignment in this class is designed to help you achieve one or more of these goals.
+
+For more detailed instructions, please refer to the pages for the [reading reactions](/assignment/weekly-check-in.qmd), [practice assignments and data-analytic memos](/assignment/dams.qmd), and the [exam](/assignment/exam.qmd). For the [final paper](/assignment/final-project.qmd), you will produce a short research paper that uses regression analysis to investigate a causal relationship. You may either (a) write a replication paper and present extensions to an existing study, or (b) write a research paper that uses your own data. Throughout the quarter, there will be two milestones related to your research paper. 
+
+As you've seen on the [syllabus](/syllabus.qmd) and [schedule](/schedule.qmd) pages, the assignment dates are as follows.
+
+| Category          | Release date         | Due date            |
+|:------------------|:---------------------|:--------------------|
+| Survey 1          | Thu, Jan 04 09:00AM  | Tue, Jan 09 11:55PM |
+| Assignment 1      | Thu, Jan 11 09:00AM  | Tue, Jan 16 11:55PM |
+| Assignment 2      | Thu, Jan 18 09:00AM  | Tue, Jan 23 11:55PM |
+| Assignment 3      | Thu, Jan 25 09:00AM  | Tue, Jan 30 11:55PM |
+| Milestone 1       |                      | Sun, Feb 04 11:55PM |
+| DAM 1             | Thu, Feb 01 09:00AM  | Tue, Feb 06 11:55PM |
+| Survey 2          | Wed, Feb 07 09:00AM  | Sun, Feb 11 11:55PM |
+| 1:1 meeting       |                      | Wed, Feb 14 05:00PM |
+| Exam              | Thu, Feb 15 02:30PM  | Thu, Feb 15 03:50PM |
+| DAM 2             | Thu, Feb 15 09:00AM  | Tue, Feb 20 11:55PM |
+| Milestone 2       |                      | Sun, Mar 03 11:55PM |
+| DAM 3             | Thu, Feb 29 09:00AM  | Tue, Mar 05 11:55PM |
+| DAM 4             | Thu, Mar 07 09:00AM  | Tue, Mar 12 11:55PM |
+| Final paper       |                      | Fri, Mar 22 11:55PM |
+| Course evaluation |                      | Fri, Mar 22 11:55PM |
+
+All reading reactions are due by 11:55PM on the day before class. All times are in Pacific time.
+
+Also, to recap what you already saw on the [syllabus](/syllabus.qmd) page, here is how each of your various course contributions and assignments contribute to your overall grade. There are no group assignments, and all contributions are graded individually.
+
+| Category                           | Percent of final grade |
+|:-----------------------------------|:-----------------------|
+| Reading reactions                  | 9%                     |
+| Participation, surveys, feedback   | 6%                     |
+| Assignments and DAMs               | 30%                    |
+| Exam                               | 25%                    |
+| Milestones 1 & 2                   | 2% each                |
+| Your final paper                   | 26%                    |
+
+:::{.callout-note}
+## Grace policy
+
+When calculating the final assignment and DAM portion of the overall grade, I will drop the lowest score and use the remaining six scores. You may also skip one of the ten reading reactions. Thus, if you have an emergency that forces you to miss a submission, your grade will not be affected.
+
+:::
+
+All grades will be posted through Canvas. 
+
+**Bump-up policy**: I reserve the right to "bump up" the grades of students who have made valuable contributions to the course in the in-person course and discussions/Perusall. This also applies to students who show tremendous progress and growth over the quarter. 
+
+Please refer to the [syllabus](/syllabus.qmd) page for the course policies. 

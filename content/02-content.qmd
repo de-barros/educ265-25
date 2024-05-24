@@ -1,0 +1,17 @@
+---
+title: "Review of regression analysis"
+date: "2024-01-18"
+---
+
+## Readings
+
+- {{< fa book >}} Chapters 5-7 in *Regression Analysis for the Social Science* [@gordon_regression_2010]
+- {{< fa book >}} Chapter 13.1 in *The Effect* [@Huntington-Klein:2021]
+
+## Videos
+
+Videos 25-28 from [this](https://www.youtube.com/watch?v=QNaPz5iSuqY&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=25) playlist accompany Chapter 13.1 in *The Effect*. Watching them is optional.
+
+## Slides
+
+On the day of class, you will find my slides on Canvas. 

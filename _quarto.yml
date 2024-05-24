@@ -1,0 +1,147 @@
+project:
+  type: website
+  render:
+    - "*.qmd"
+    - "!slides/"
+  resources:
+    - "files/"
+    - "projects/"
+    - "slides/*.html"
+    - "slides/*.pdf"
+    - "slides/img/"
+    - "slides/libs/"
+    - "slides/css/"
+    - "slides/*_files/"
+
+# See https://quarto.org/docs/projects/code-execution.html#freeze
+execute:
+  freeze: auto  # Re-render only when source changes
+
+bibliography: files/bib/references.bib
+csl: files/bib/chicago-author-date.csl
+description-meta: "Apply regression analysis to investigate causal relationships"
+
+website:
+  title: "EDUC 265"
+  site-url: "https://educ265.de-barros.com/"
+
+  favicon: "/files/icon-512.png"
+
+  twitter-card:
+    image: "/files/social-image-f22.png"
+    card-style: summary_large_image
+    creator: "@andydebarros"
+    # site: "@andydebarros"
+
+  open-graph:
+    image: "/files/social-image-f22.png"
+    locale: en_US
+
+  navbar:
+    pinned: true
+    background: "#0064a4"
+    right:
+      - syllabus.qmd
+      - schedule.qmd
+      - text: "Content"
+        file: content/index.qmd
+      - text: "Assignments"
+        file: assignment/index.qmd
+      - text: "Resources"
+        file: resource/index.qmd
+      - text: "{{< iconify academicons publons >}}"
+        href: "https://canvas.eee.uci.edu/courses/60371/external_tools/16107?display=borderless"
+        aria-label: Perusall
+      - text: "{{< iconify simple-icons canvas >}}"
+        href: "https://canvas.eee.uci.edu/courses/60371"
+        aria-label: Canvas
+
+  sidebar:
+    - title: "Content"
+      style: "docked"
+      search: false
+      background: dark
+      contents:
+        - section: "Overview"
+          contents:
+            - content/index.qmd
+        - section: "Course content"
+          contents:
+            - text: "1: The causal revolution"
+              file: content/01-content.qmd
+            - text: "2: Review of regression analysis"
+              file: content/02-content.qmd
+            - text: "3: Interactions and transformations"
+              file: content/03-content.qmd
+            - text: "4: Discrete outcomes and regression adjustment"
+              file: content/04-content.qmd
+            - text: "5: Fixed effects, value added, and randomized experiments"
+              file: content/05-content.qmd
+            - text: "6: Sample size calculations and clustered data"
+              file: content/06-content.qmd
+            - text: "7: Instrumental variables"
+              file: content/07-content.qmd
+            - text: "8: Regression discontinuity"
+              file: content/08-content.qmd
+            - text: "9: Difference in differences"
+              file: content/09-content.qmd
+            - text: "10: Open science and multiple hypothesis testing"
+              file: content/10-content.qmd
+
+    - title: "Assignments"
+      contents:
+        - section: "Assignments"
+          contents:
+            - assignment/index.qmd
+            - assignment/weekly-check-in.qmd
+            - assignment/dams.qmd
+            - assignment/exam.qmd
+        - section: "Final project"
+          contents:
+            - assignment/final-project.qmd
+            - assignment/replication.qmd
+            - assignment/paper.qmd
+
+    - title: "Resources"
+      contents:
+        - section: "Overview"
+          contents:
+            - resource/index.qmd
+        - section: "Causal inference"
+          contents:
+            - resource/beyond.qmd
+        - section: "R"
+          contents:
+            - resource/r.qmd
+            - resource/install.qmd
+            - resource/style.qmd
+            - resource/markdown.qmd
+            - resource/rmarkdown.qmd
+        - section: "Stata"
+          contents:
+            - resource/stata.qmd
+        - section: "Other topics"
+          contents:
+            - resource/citations.qmd
+            - resource/data.qmd
+            - resource/unzipping.qmd
+            - resource/writing.qmd
+
+  page-footer:
+    left: |
+      Original content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var attribution.name_no_title >}}]({{< var attribution.url >}}) <br>
+      Additional content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var instructor.name_no_title >}}]({{< var instructor.url >}}) <br>
+      All content licensed under a {{< fa brands creative-commons >}}
+      {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}}
+      [Creative Commons Attribution-NonCommercial 4.0 International license (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)
+    right: |
+      Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/)<br>
+      [View the source at {{< fa brands github >}} GitHub]({{< var course.github >}})
+
+format:
+  html:
+    theme:
+      - litera
+      - html/custom.scss
+    toc: true
+    highlight-style: monokai

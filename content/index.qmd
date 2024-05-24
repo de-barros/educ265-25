@@ -1,0 +1,20 @@
+---
+title: "Readings and slides"
+---
+
+## Before you start
+
+Before you start, please make sure to review the [syllabus](/syllabus.qmd), [schedule](/schedule.qmd), [content](/content/index.qmd), and [assignments](/assignment/index.qmd) pages of our course.
+
+## Readings
+
+Each class session has a set of required readings that you should complete ***before*** our in-person meetings. Reading reactions are due at 11:55 PM on the day before class (via Perusall). 
+
+## Videos 
+
+For some of our classes (including our very first class) I will assign short videos. 
+
+## Slides
+
+I will also post slides on the day of class. You may bring a printed copy. I may edit these slides and post a final version shortly after class. Please make sure to use this final version as you prepare for your assignments and the exam.  
+

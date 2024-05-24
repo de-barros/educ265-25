@@ -1,0 +1,11 @@
+---
+title: Citations and bibliography
+---
+
+You can [download a BibTeX file](/files/bib/references.bib) of all the non-web-based readings in the course:
+
+- [{{< fa book >}} `references.bib`](/files/bib/references.bib)
+
+You can open the file in [BibDesk on macOS](http://bibdesk.sourceforge.net/), [JabRef on Windows](http://www.jabref.org/), or [Zotero](https://www.zotero.org/) or [Mendeley](https://www.mendeley.com/) online.
+
+You will probably start your own literature reviews with Google Scholar, but you may also try out some of the new, AI-powered literature review tools, such as [Connected Papers](https://www.connectedpapers.com/), [Inciteful](https://inciteful.xyz/), or [ResearchRabbit](https://www.researchrabbit.ai/). 

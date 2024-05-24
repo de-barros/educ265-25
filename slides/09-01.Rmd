@@ -1,0 +1,1619 @@
+---
+title: "Difference-in-differences"
+author: "Andreas de Barros"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: "libs"
+    chakra: "libs/remark-latest.min.js"
+    css: ["default", "css/ath-slides.css", "css/ath-inferno-fonts.css", "css/animate.css"]
+    seal: false
+    anchor_sections: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:   
+        scroll: true # Changed this to true to enable scrolling
+      incremental: true  # Added this line to stay on the same slide when knitting  
+      self_contained: false  # Added this line to prevent HTML caching
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.retina = 3, fig.align = "center")
+```
+
+```{r packages-data, include=FALSE}
+library(tidyverse)
+library(flair)
+library(broom)
+library(ggdag)
+library(kableExtra)
+library(scales)
+library(patchwork)
+
+world_happiness <- read_csv("data/world_happiness.csv") %>% 
+  mutate(latin_america = region == "Latin America & Caribbean") %>% 
+  mutate(latin_america = factor(latin_america, labels = c("Not Latin America", "Latin America")))
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view"))
+```
+
+class: center middle main-title section-title-4
+
+# Difference-in-differences
+
+.class-info[
+
+**Class 9**
+
+.light[EDUC 265: Applied Regression Analysis<br>
+UCI School of Education
+]
+
+]
+
+---
+
+name: outline
+class: title title-4
+
+# Plan for today
+
+--
+
+.box-1.medium.sp-after-half[Two cohorts, two locations]
+
+--
+
+.box-3.medium.sp-after-half[Before-after, two locations]
+
+--
+
+.box-6.medium.sp-after-half[Diff-in-diff assumptions]
+
+--
+
+.box-7.medium.sp-after-half[Beyond 2x2s]
+ 
+---
+
+layout: false
+name: two-wrongs
+class: center middle section-title section-title-1 animated fadeIn
+
+# Two cohorts, two locations
+
+---
+
+layout: true
+class: title title-1
+
+---
+
+# School construction in Indonesia
+
+.box-inv-1.medium.sp-after-half[Did doubling the number of primary schools impact long-term life outcomes?]
+
+--
+
+.box-1.sp-after[Did educational attainment increase?]
+
+.box-inv-1.small.sp-after[Did earnings increase?]
+
+--
+.box-inv-1.medium[INPRES started in 1973, built more than 61,000 new primary schools in 6 years]
+
+???
+
+https://www.jstor.org/stable/2677813
+
+But also see the re-analysis, here:
+https://www.openphilanthropy.org/research/does-putting-kids-in-school-now-put-money-in-their-pockets-later-revisiting-a-natural-experiment-in-indonesia/
+
+---
+
+layout: false
+class: bg-full
+background-image: url("img/14/inpres-1.png")
+
+---
+
+layout: false
+class: bg-full
+background-image: url("img/14/inpres-2.jpg")
+
+---
+
+layout: false
+class: bg-full
+background-image: url("img/14/inpres-3.jpg")
+
+---
+
+layout: true
+class: title title-1
+
+---
+
+# High- vs. low-intensity regions
+
+.box-inv-1.medium.sp-after-half[By 1995, had boys/men in the target age range received more schooling?]
+
+--
+
+.box-1[Years of education <sub>Eligible (ages 2-6 in 1974) x Low-intensity region </sub> = 9.76]
+
+--
+
+.box-1[Years of education <sub>Eligible (ages 2-6 in 1974) x High-intensity region </sub> = 8.49]
+
+--
+
+.box-1.sp-after[∆ = -1.27]
+
+--
+
+.box-inv-1.medium[Is this the causal effect? Program failure?]
+
+???
+
+No! Not possible because maybe other things happened to the group of high-intensity regions to cause that – there's no control group to compare with. This group would have also experience the same "shocks" as that region.
+
+---
+
+# High- vs. low-intensity regions
+
+.box-inv-1.medium.sp-after-half[By 1995, had boys/men in the target age range received more schooling?]
+
+--
+
+.box-1[Years of edu. <sub>Ineligible (ages 12-17 in 1974) x High-intensity region </sub> = 8.02]
+
+--
+
+.box-1[Years of edu. <sub>Eligible (ages 2-6 in 1974) x High-intensity region </sub> = 8.49]
+
+--
+
+.box-1.sp-after[∆ = 0.47]
+
+--
+
+.box-inv-1.medium[Is this the causal effect? Success!?]
+
+???
+
+No! Not possible because maybe other things happened to the different cohorts to cause that – there may be secular trends going.
+
+---
+
+# Problems
+
+--
+
+.box-inv-1.medium[Comparing regions by program intensity]
+
+--
+
+.box-1.small[Regions are different to start with]
+
+--
+
+.box-1.small.sp-after[Selection into treatment! Omitted variable bias!]
+
+--
+
+.box-inv-1.medium.sp-before[Comparing cohorts in high-intensity regions]
+
+--
+
+.box-1.small[Same regions]
+
+--
+
+.box-1.small[Impossible to know if change happened because of overall trends]
+
+---
+
+layout: false
+
+```{r min-wage-dag, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+node_details <- tribble(
+  ~name, ~label, ~x, ~y,
+  "treatment", "Primary school available", 1, 2,
+  "outcome", "Attainment", 3, 2,
+  "time", "Region (program intensity)", 2, 3,
+  "nj", "Age at roll-out (cohort/eligibility)", 2, 1
+)
+
+node_labels <- node_details$label
+names(node_labels) <- node_details$name
+
+my_dag <- dagify(outcome ~ treatment + time + nj,
+                 treatment ~ time + nj,
+                 exposure = "treatment",
+                 outcome = "outcome",
+                 coords = node_details,
+                 labels = node_labels) %>% 
+  tidy_dagitty() %>%
+  node_status()   # Add column for exposure/outcome/latent
+
+status_colors <- c(exposure = "#0074D9", outcome = "#FF851B", latent = "grey50")
+
+# Fancier graph
+set.seed(1234)
+ggplot(my_dag, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges(start_cap = ggraph::circle(3, "lines"),
+                 end_cap = ggraph::circle(3, "lines"),
+                 edge_width = 1.5, 
+                 arrow_directed = grid::arrow(length = grid::unit(0.75, "lines"), type = "closed")) +
+  geom_dag_point(aes(color = status), size = 30) +
+  geom_dag_label_repel(aes(label = label, fill = status), seed = 1234,
+                       color = "white", fontface = "bold", size = 10,
+                       label.padding = grid::unit(0.75, "lines"),
+                       box.padding = grid::unit(2.5, "lines"),
+                       direction = "y") +
+  scale_color_manual(values = status_colors, na.value = "grey20") +
+  scale_fill_manual(values = status_colors, na.value = "grey20") +
+  guides(color = FALSE, fill = FALSE) + 
+  theme_dag(base_size = 20, base_family = "Fira Sans Condensed")
+```
+
+---
+
+```{r dd-table-basic, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Too old`, ~`Eligible age`, ~`<span class='color-1'>∆ <span class='smaller'>(eligible − ineligible)</span></span>`,
+  "Low-intensity", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(treated a little)</small>", "<b>B − A</b>",
+  "High-intensity", "<b>C</b><br><span class='small'>(never treated)</small>", "<b>D</b><br><span class='small'>(treated a lot)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(high − low)</span>", "<b>C − A</b>", "<b>D − B</b>", "<span class=''><b>(D − C) − (B − A)</b></span> <i>or</i><br><span class=''><b>(D − B) − (C − A)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  column_spec(1, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  column_spec(4, background = "#FFFFFF", color = "#FFFFFF") %>% 
+  row_spec(3, background = "#FFFFFF", color = "#FFFFFF")
+```
+
+---
+
+```{r dd-table-growth, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Too old`, ~`Eligible age`, ~`<span class='color-1'>∆ <span class='smaller'>(eligible − ineligible)</span></span>`,
+  "Low-intensity", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(treated a little)</small>", "<b>B − A</b>",
+  "High-intensity", "<b>C</b><br><span class='small'>(never treated)</small>", "<b>D</b><br><span class='small'>(treated a lot)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(high − low)</span>", "<b>C − A</b>", "<b>D − B</b>", "<span class=''><b>(D − C) − (B − A)</b></span> <i>or</i><br><span class=''><b>(D − B) − (C − A)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  column_spec(1, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  row_spec(3, background = "#FFFFFF", color = "#FFFFFF")
+```
+
+
+
+.box-1[∆ (eligible − ineligible) = **across-cohort difference**]
+
+---
+
+```{r dd-table-within, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Too old`, ~`Eligible age`, ~`<span class='color-1'>∆ <span class='smaller'>(eligible − ineligible)</span></span>`,
+  "Low-intensity", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(treated a little)</small>", "<b>B − A</b>",
+  "High-intensity", "<b>C</b><br><span class='small'>(never treated)</small>", "<b>D</b><br><span class='small'>(treated a lot)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(high − low)</span>", "<b>C − A</b>", "<b>D − B</b>", "<span class=''><b>(D − C) − (B − A)</b></span> <i>or</i><br><span class=''><b>(D − B) − (C − A)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  column_spec(1, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  column_spec(4, background = "#FFFFFF", color = "#FFFFFF")
+```
+
+.box-1[∆ (high − low-intensity) = **across-region difference**]
+
+---
+
+```{r dd-table-full, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Too old`, ~`Eligible age`, ~`<span class='color-1'>∆ <span class='smaller'>(eligible − ineligible)</span></span>`,
+  "Low-intensity", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(treated a little)</small>", "<b>B − A</b>",
+  "High-intensity", "<b>C</b><br><span class='small'>(never treated)</small>", "<b>D</b><br><span class='small'>(treated a lot)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(high − low)</span>", "<b>C − A</b>", "<b>D − B</b>", "<span class=''><b>(D − C) − (B − A)</b></span> <i>or</i><br><span class=''><b>(D − B) − (C − A)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#DDDDDD") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  column_spec(1, bold = TRUE, background = "#fff3d6", color = "#dbac49")
+```
+
+.box-1[∆<sub>across cohorts</sub> − ∆<sub>across regions</sub> =<br>Difference-in-differences =<br>causal effect!]
+
+---
+
+class: middle
+
+.medium-small[
+$$\begin{aligned}
+\text{DD}\ =\ &(\bar{x}_\text{treat, eligible} - \bar{x}_\text{treat, ineligible}) \\
+&- (\bar{x}_\text{control, eligible} - \bar{x}_\text{control, ineligible})
+\end{aligned}$$
+]
+
+---
+
+```{r dd-table-numbers, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Too old`, ~`Eligible age`, ~`<span class='color-1'>∆ <span class='smaller'>(eligible − ineligible)</span></span>`,
+  "Low-intensity", "<b>9.40</b><br><span class='small'>A</small>", "<b>9.76</b><br><span class='small'>B</small>", "<b>0.36</b><br><span class='small'>B − A</small>",
+  "High-intensity", "<b>8.02</b><br><span class='small'>C</small>", "<b>8.49</b><br><span class='small'>D</small>", "<b>0.47</b><br><span class='small'>D − C</small>",
+  "∆<br><span class='smaller'>(high − low)</span>", "<b>-1.39</b><br><span class='small'>C − A</small>", "<b>-1.27</b><br><span class='small'>D − B</small>", "<b>(-1.27) − (−1.39) = <br><span class='color-1'>0.12</span></b>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#DDDDDD") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#fff3d6", color = "#dbac49") %>% 
+  column_spec(1, bold = TRUE, background = "#fff3d6", color = "#dbac49")
+```
+
+---
+
+layout: false
+name: diff-diff-assumptions
+class: center middle section-title section-title-3 animated fadeIn
+
+# Before-after, two groups
+
+---
+
+layout: true
+class: title title-3
+
+---
+
+# Raising the minimum wage
+
+.box-inv-3.medium.sp-after-half[What happens if you raise the minimum wage?]
+
+--
+
+.box-3.sp-after[Economic theory says there<br>should be fewer jobs]
+
+--
+
+.box-inv-3.medium[New Jersey in 1992]
+
+.box-inv-3.medium[$4.25 → $5.05]
+
+---
+
+# Before vs. after
+
+.box-inv-3.medium.sp-after-half[Average # of jobs per fast food restaurant in NJ]
+
+--
+
+.box-3[New Jersey<sub>Before change</sub> = 20.44]
+
+--
+
+.box-3[New Jersey<sub>After change</sub> = 21.03]
+
+--
+
+.box-3.sp-after[∆ = 0.59]
+
+--
+
+.box-inv-3.medium[Is this the causal effect?]
+
+???
+
+No! Not possible because maybe other things happened in NJ to cause that – there's no control state to compare with NJ
+
+---
+
+# Treatment vs. control
+
+.box-inv-3.medium.sp-after-half[Average # of jobs per fast food restaurant]
+
+--
+
+.box-3[Pennsylvania<sub>After change</sub> = 21.17]
+
+--
+
+.box-3[New Jersey<sub>After change</sub> = 21.03]
+
+--
+
+.box-3.sp-after[∆ = −0.14]
+
+--
+
+.box-inv-3.medium[Is this the causal effect?]
+
+???
+
+No! There's no pre-level to compare with. Maybe both states went up, maybe both went down. Can't tell.
+
+---
+
+# Problems
+
+--
+
+.box-inv-3.medium[Comparing only before/after]
+
+--
+
+.box-3.small[You're only looking at the treatment group!]
+
+--
+
+.box-3.small.sp-after[Impossible to know if change happened because of treatment or just naturally]
+
+--
+
+.box-inv-3.medium.sp-before[Comparing only treatment/control]
+
+--
+
+.box-3.small[You're only looking at post-treatment values]
+
+--
+
+.box-3.small[Impossible to know if change happened because of natural growth]
+
+---
+
+layout: false
+
+```{r min-wage-dag1, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+node_details1 <- tribble(
+  ~name, ~label, ~x, ~y,
+  "treatment", "Minimum wage", 1, 2,
+  "outcome", "Jobs", 3, 2,
+  "time", "Time (year)", 2, 3,
+  "nj", "Being in New Jersey", 2, 1
+)
+
+node_labels1 <- node_details1$label
+names(node_labels1) <- node_details1$name
+
+my_dag1 <- dagify(outcome ~ treatment + time + nj,
+                 treatment ~ time + nj,
+                 exposure = "treatment",
+                 outcome = "outcome",
+                 coords = node_details1,
+                 labels = node_labels1) %>% 
+  tidy_dagitty() %>%
+  node_status()   # Add column for exposure/outcome/latent
+
+status_colors <- c(exposure = "#0074D9", outcome = "#FF851B", latent = "grey50")
+
+# Fancier graph
+set.seed(1234)
+ggplot(my_dag1, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges(start_cap = ggraph::circle(3, "lines"),
+                 end_cap = ggraph::circle(3, "lines"),
+                 edge_width = 1.5, 
+                 arrow_directed = grid::arrow(length = grid::unit(0.75, "lines"), type = "closed")) +
+  geom_dag_point(aes(color = status), size = 30) +
+  geom_dag_label_repel(aes(label = label, fill = status), seed = 1234,
+                       color = "white", fontface = "bold", size = 10,
+                       label.padding = grid::unit(0.75, "lines"),
+                       box.padding = grid::unit(2.5, "lines"),
+                       direction = "y") +
+  scale_color_manual(values = status_colors, na.value = "grey20") +
+  scale_fill_manual(values = status_colors, na.value = "grey20") +
+  guides(color = FALSE, fill = FALSE) + 
+  theme_dag(base_size = 20, base_family = "Fira Sans Condensed")
+```
+
+---
+
+```{r dd-table-basic2, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Pre mean`, ~`Post mean`, ~`<span class='color-light-3'>∆ <span class='smaller'>(post − pre)</span></span>`,
+  "Control", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(never treated)</small>", "<b>B − A</b>",
+  "Treatment", "<b>C</b><br><span class='small'>(not yet treated)</small>", "<b>D</b><br><span class='small'>(treated)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(treatment − control)</span>", "<b>C − A</b>", "<b>D − B</b>", "<span class=''><b>(B − A) − (D − C)</b></span> <i>or</i><br><span class=''><b>(B − D) − (A − C)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(4, background = "#FFFFFF", color = "#FFFFFF") %>% 
+  row_spec(3, background = "#FFFFFF", color = "#FFFFFF")
+```
+
+---
+
+```{r dd-table-growth3, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Pre mean`, ~`Post mean`, ~`∆ <span class='smaller'>(post − pre)</span>`,
+  "Control", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(never treated)</small>", "<b>B − A</b>",
+  "Treatment", "<b>C</b><br><span class='small'>(not yet treated)</small>", "<b>D</b><br><span class='small'>(treated)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(treatment − control)</span>", "<b>A − C</b>", "<b>B − D</b>", "<span class=''><b>(B − A) − (D − C)</b></span> <i>or</i><br><span class=''><b>(B − D) − (A − C)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  row_spec(3, background = "#FFFFFF", color = "#FFFFFF")
+```
+
+.box-3[∆ (post − pre) = **within-unit growth**]
+
+---
+
+```{r dd-table-within4, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Pre mean`, ~`Post mean`, ~`<span class='color-light-3'>∆ <span class='smaller'>(post − pre)</span></span>`,
+  "Control", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(never treated)</small>", "<b>B − A</b>",
+  "Treatment", "<b>C</b><br><span class='small'>(not yet treated)</small>", "<b>D</b><br><span class='small'>(treated)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(treatment − control)</span>", "<b>C − A</b>", "<b>D − B</b>", "<span class=''><b>(B − A) − (D − C)</b></span> <i>or</i><br><span class=''><b>(B − D) − (A − C)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(4, background = "#FFFFFF", color = "#FFFFFF")
+```
+
+.box-3[∆ (treatment − control) = **across-group growth**]
+
+---
+
+```{r dd-table-full5, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Pre mean`, ~`Post mean`, ~`∆ <span class='smaller'>(post − pre)</span>`,
+  "Control", "<b>A</b><br><span class='small'>(never treated)</small>", "<b>B</b><br><span class='small'>(never treated)</small>", "<b>B − A</b>",
+  "Treatment", "<b>C</b><br><span class='small'>(not yet treated)</small>", "<b>D</b><br><span class='small'>(treated)</small>", "<b>D − C</b>",
+  "∆<br><span class='smaller'>(treatment − control)</span>", "<b>C − A</b>", "<b>D − B</b>", "<span class='color-3'><b>(D − C) − (B − A)</b></span> <i>or</i><br><span class='color-3'><b>(D − B) − (C − A)</b></span>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#DDDDDD") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446")
+```
+
+.box-3[∆<sub>within units</sub>, <sub>across groups</sub> or</sub><br>∆<sub>within groups</sub>, <sub>across units</sub>= </sub><br>Difference-in-differences =<br>causal effect!]
+
+---
+
+class: middle
+
+.medium[
+$$\begin{aligned}
+\text{DD}\ =\ &(\bar{x}_\text{treatment, post} - \bar{x}_\text{treatment, pre}) \\
+&- (\bar{x}_\text{control, post} - \bar{x}_\text{control, pre})
+\end{aligned}$$
+]
+
+---
+
+```{r dd-table-numbers6, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`Pre mean`, ~`Post mean`, ~`∆ <span class='smaller'>(post − pre)</span>`,
+  "Pennsylvania", "<b>23.33</b><br><span class='small'>A</small>", "<b>21.17</b><br><span class='small'>B</small>", "<b>-2.16</b><br><span class='small'>B − A</small>",
+  "New Jersey", "<b>20.44</b><br><span class='small'>C</small>", "<b>21.03</b><br><span class='small'>D</small>", "<b>0.59</b><br><span class='small'>D − C</small>",
+  "∆<br><span class='smaller'>(NJ − PA)</span>", "<b>-2.89</b><br><span class='small'>C − A</small>", "<b>-0.14</b><br><span class='small'>D − B</small>", "<b>(0.59) − (−2.16) = <br><span class='color-3'>2.76</span></b>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#DDDDDD") %>% 
+  column_spec(4, background = "#DDDDDD") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446")
+```
+
+---
+
+```{r dd-graph7, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+dd_labels <- tribble(
+  ~Group, ~Time, ~label,
+  "Treatment", "Before", "A",
+  "Treatment", "After", "B",
+  "Control", "Before", "C",
+  "Control", "After", "D"
+)
+
+dd_data <- tribble(
+  ~Group, ~Before, ~Intervention, ~After,
+  "Treatment", 30, 35, 50,
+  "Control",   20, 25, 30
+) %>% 
+  pivot_longer(cols = !Group, names_to = "Time", values_to = "avg") %>% 
+  left_join(dd_labels, by = c("Group", "Time")) %>% 
+  mutate(across(c(Group, Time), ~fct_inorder(.)))
+
+ggplot(dd_data, aes(x = Time, y = avg, color = Group, group = Group)) +
+  geom_vline(xintercept = "Intervention") +
+  geom_line(size = 3,
+            key_glyph = draw_key_point) +
+  annotate(geom = "segment", x = "Intervention", xend = "After",
+           y = 35, yend = 40, color = "#0074D9", size = 2, linetype = "22") +
+  annotate(geom = "segment", x = "After", xend = "After",
+           y = 40, yend = 50, color = "#FF4136", size = 2) +
+  annotate(geom = "label", x = "After", y = 45, label = "Causal\neffect",
+           family = "Fira Sans Condensed Bold", fontface = "plain", 
+           size = 5, fill = "#FF4136", color = "white") +
+  geom_point(data = filter(dd_data, !is.na(label)), size = 15) +
+  geom_text(aes(label = label), family = "Fira Sans Condensed Bold", 
+            fontface = "plain", size = 10, color = "white") +
+  scale_color_manual(values = c("#0074D9", "#3D9970")) +
+  labs(x = NULL, y = "Outcome") +
+  coord_cartesian(ylim = c(15, 55)) +
+  theme_bw(base_size = 24, base_family = "Fira Sans Condensed")
+```
+
+---
+
+class: title title-3
+
+# An easier way?
+
+--
+
+.box-inv-3.medium[Finding all the group<br>means is tedious!]
+
+--
+
+.box-inv-3.medium.sp-after[What if there are other<br>backdoors to worry about?]
+
+--
+
+.box-3.medium[Regression to the rescue!]
+
+---
+
+![](`r knitr::fig_chunk("min-wage-dag1", "png")`)
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\alpha + \beta\ \color{#0074D9}{\text{Group}_i} + \gamma\ \color{#39CCCC}{\text{Time}_t} + \\
+&\delta\ \color{#FF4136}{(\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+--
+
+.center.sp-after[
+```{r dd-example-code, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ group + time + (group * time))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" group ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" time ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(group * time)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+--
+
+&nbsp;
+
+<span class="box-3", style="background-color: #0074D9">Group = 1 or TRUE if treatment</span>
+
+--
+
+<span class="box-3", style="background-color: #39CCCC">Time = 1 or TRUE if after</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\color{#666666}{\alpha} + \color{#0074D9}{\beta\ \text{Group}_i} + \color{#39CCCC}{\gamma\ \text{Time}_t} + \\
+&\color{#FF4136}{\delta\ (\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+.center.sp-after[
+```{r dd-example-code-again, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ group + time + (group * time))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" group ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" time ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(group * time)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+--
+
+<span class="box-3", style="background-color: #666666">α = Mean of control, pre-treatment</span>
+
+--
+
+<span class="box-3", style="background-color: #0074D9">β = Increase in outcome across groups</span>
+
+--
+
+<span class="box-3", style="background-color: #39CCCC">γ = Increase in outcome over time within units</span>
+
+--
+
+<span class="box-3", style="background-color: #FF4136">δ = Difference in differences!</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\color{#666666}{\alpha} + \color{#0074D9}{\beta\ \text{Group}_i} + \color{#39CCCC}{\gamma\ \text{Time}_t} + \\
+&\color{#FF4136}{\delta\ (\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+```{r dd-table-coefs, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`&ensp;Pre mean&ensp;`, ~`&ensp;Post mean&ensp;`, ~`&ensp;∆ <span class='smaller'>(post − pre)</span>&ensp;`,
+  "Control", "<b><span style='color: #666666;'>α</span></b>", "<b><span style='color: #666666;'>α</span> + <span style='color: #39CCCC;'>γ</span></b>", "<b><span style='color: #39CCCC;'>γ</span></b>",
+  "Treatment", "<b><span style='color: #666666;'>α</span> + <span style='color: #0074D9;'>β</span></b>", "<b><span style='color: #666666;'>α</span> + <span style='color: #0074D9;'>β</span> + <span style='color: #39CCCC;'>γ</span> + <span style='color: #FF4136'>δ</span></b>", "<b><span style='color: #39CCCC;'>γ</span> + <span style='color: #FF4136'>δ</span></b>",
+  "&ensp;∆ <span class='smaller'>(trtmt − ctrl)</span>&ensp;", "<b><span style='color: #0074D9;'>β</span></b>", "<b><span style='color: #0074D9;'>β</span> + <span style='color: #FF4136'>δ</span></b>", "<b><span style='color: #FF4136'>δ</span></b>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#EEEEEE") %>% 
+  column_spec(4, background = "#EEEEEE") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446")
+```
+
+---
+
+```{r dd-graph, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+dd_labels2 <- tribble(
+  ~Group, ~Time, ~label,
+  "Treatment", "Before", "A",
+  "Treatment", "After", "B",
+  "Control", "Before", "C",
+  "Control", "After", "D"
+)
+
+dd_data2 <- tribble(
+  ~Group, ~Before, ~Intervention, ~After,
+  "Treatment", 30, 35, 50,
+  "Control",   20, 25, 30
+) %>% 
+  pivot_longer(cols = !Group, names_to = "Time", values_to = "avg") %>% 
+  left_join(dd_labels2, by = c("Group", "Time")) %>% 
+  mutate(across(c(Group, Time), ~fct_inorder(.)))
+
+ggplot(dd_data2, aes(x = Time, y = avg, color = Group, group = Group)) +
+  geom_vline(xintercept = "Intervention") +
+  geom_line(size = 3,
+            key_glyph = draw_key_point) +
+  annotate(geom = "segment", x = "Intervention", xend = "After",
+           y = 35, yend = 40, color = "#0074D9", size = 2, linetype = "22") +
+  annotate(geom = "segment", x = "After", xend = "After",
+           y = 40, yend = 50, color = "#FF4136", size = 2) +
+  annotate(geom = "label", x = "After", y = 45, label = "Causal\neffect",
+           family = "Fira Sans Condensed Bold", fontface = "plain", 
+           size = 5, fill = "#FF4136", color = "white") +
+  geom_point(data = filter(dd_data2, !is.na(label)), size = 15) +
+  geom_text(aes(label = label), family = "Fira Sans Condensed Bold", 
+            fontface = "plain", size = 10, color = "white") +
+  scale_color_manual(values = c("#0074D9", "#3D9970")) +
+  labs(x = NULL, y = "Outcome") +
+  coord_cartesian(ylim = c(15, 55)) +
+  theme_bw(base_size = 24, base_family = "Fira Sans Condensed")
+```
+
+---
+
+class: title title-3
+
+# An easier way?
+
+--
+
+.box-inv-3.medium[Finding all the group<br>means is tedious!]
+
+--
+
+.box-inv-3.medium.sp-after[What if there are other<br>backdoors to worry about?]
+
+--
+
+.box-3.medium[Regression to the rescue!]
+
+---
+
+![](`r knitr::fig_chunk("min-wage-dag1", "png")`)
+
+---
+
+.pull-left[
+
+.center[
+<figure>
+  <img src="img/08/hotdogs-small.jpg" alt="Hot dog prices" title="Hot dog prices" width="50%">
+</figure>
+]
+
+.small-code[
+```{r hotdogs-data, echo=FALSE}
+hotdogs <- tribble(
+  ~price, ~cheese, ~chili,
+  2.00,   FALSE,   FALSE,
+  2.35,   TRUE,    FALSE,
+  2.35,   FALSE,   TRUE,
+  2.70,   TRUE,    TRUE
+)
+```
+
+```{r show-hotdogs-data}
+hotdogs
+```
+]
+]
+
+--
+
+.pull-right.small-code[
+```{r hotdogs-diff-diff}
+model_hotdogs <- 
+  lm(price ~ cheese + chili + 
+       cheese * chili, 
+     data = hotdogs)
+```
+
+```{r show-hotdogs-diff-diff-fake, eval=FALSE}
+tidy(model_hotdogs)
+```
+
+```{r show-hotdogs-diff-diff, echo=FALSE}
+tidy(model_hotdogs) %>% 
+  select(term, estimate) %>% 
+  mutate(estimate = round(estimate, 2))
+```
+]
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\alpha + \beta\ \color{#0074D9}{\text{Group}_i} + \gamma\ \color{#39CCCC}{\text{Time}_t} + \\
+&\delta\ \color{#FF4136}{(\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+--
+
+.center.sp-after[
+```{r dd-example-code2, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ group + time + (group * time))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" group ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" time ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(group * time)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+--
+
+&nbsp;
+
+<span class="box-1", style="background-color: #0074D9">Group = 1 or TRUE if treatment</span>
+
+--
+
+<span class="box-1", style="background-color: #39CCCC">Time = 1 or TRUE if after</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\color{#666666}{\alpha} + \color{#0074D9}{\beta\ \text{Group}_i} + \color{#39CCCC}{\gamma\ \text{Time}_t} + \\
+&\color{#FF4136}{\delta\ (\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+.center.sp-after[
+```{r dd-example-code-again2, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ group + time + (group * time))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" group ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" time ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(group * time)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+--
+
+<span class="box-1", style="background-color: #666666">α = Mean of control, pre-treatment</span>
+
+--
+
+<span class="box-1", style="background-color: #0074D9">β = Increase in outcome across groups</span>
+
+--
+
+<span class="box-1", style="background-color: #39CCCC">γ = Increase in outcome over time within units</span>
+
+--
+
+<span class="box-1", style="background-color: #FF4136">δ = Difference in differences!</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\color{#666666}{\alpha} + \color{#0074D9}{\beta\ \text{Group}_i} + \color{#39CCCC}{\gamma\ \text{Time}_t} + \\
+&\color{#FF4136}{\delta\ (\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+```{r dd-table-coefs2, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`&ensp;Pre mean&ensp;`, ~`&ensp;Post mean&ensp;`, ~`&ensp;∆ <span class='smaller'>(post − pre)</span>&ensp;`,
+  "Control", "<b><span style='color: #666666;'>α</span></b>", "<b><span style='color: #666666;'>α</span> + <span style='color: #39CCCC;'>γ</span></b>", "<b><span style='color: #39CCCC;'>γ</span></b>",
+  "Treatment", "<b><span style='color: #666666;'>α</span> + <span style='color: #0074D9;'>β</span></b>", "<b><span style='color: #666666;'>α</span> + <span style='color: #0074D9;'>β</span> + <span style='color: #39CCCC;'>γ</span> + <span style='color: #FF4136'>δ</span></b>", "<b><span style='color: #39CCCC;'>γ</span> + <span style='color: #FF4136'>δ</span></b>",
+  "&ensp;∆ <span class='smaller'>(trtmt − ctrl)</span>&ensp;", "<b><span style='color: #0074D9;'>β</span></b>", "<b><span style='color: #0074D9;'>β</span> + <span style='color: #FF4136'>δ</span></b>", "<b><span style='color: #FF4136'>δ</span></b>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#EEEEEE") %>% 
+  column_spec(4, background = "#EEEEEE") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446")
+```
+
+---
+
+layout: false
+name: diff-diff-assumptions
+class: center middle section-title section-title-6 animated fadeIn
+
+# Diff-in-diff assumptions
+
+---
+
+class: title title-6
+
+# Nothing else "switched on"
+
+.box-inv-6.medium[🎵 And nothing else matters 🎵]
+
+--
+
+.box-6.sp-after-half[We assume only the program started at this time.<br> If something else started as well, we can't disentangle the two.]
+
+--
+
+.box-6.sp-after[We assume nothing new happened in the comparison group.<br> If something else started simultaneously, it will bias our results.]
+
+---
+
+class: title title-6
+
+# Assumptions
+
+.box-inv-6.medium[Parallel trends]
+
+--
+
+.box-6[Treatment and control groups might have different values<br>at first, but we assume that the treatment group would<br>have changed like the control group in the absence of treatment]
+
+---
+
+```{r plot-trends-1, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+trends <- expand_grid(state = c("A", "B"), month = 1:6) %>% 
+  mutate(income_parallel = case_when(
+    state == "A" ~ 100 + 125 * month,
+    state == "B" & month <= 3 ~ 100 + 125 * month + 200,
+    state == "B" & month > 3 ~ 100 + 125 * month + 400
+  )) %>% 
+  mutate(income_flat = case_when(
+    state == "A" ~ 100 + 125 * month,
+    state == "B" & month <= 3 ~ 675,
+    state == "B" & month > 3 ~ 100 + 125 * month + 400
+  )) %>% 
+  mutate(income_down = case_when(
+    state == "A" ~ 100 + 125 * month,
+    state == "B" & month <= 3 ~ 800 - 100 * month + 200,
+    state == "B" & month > 3 ~ 100 + 125 * month + 400
+  )) %>% 
+  mutate(state = paste0("State ", state))
+
+hypothetical_end <- lm(income_parallel ~ month, 
+                       data = filter(trends, state == "State B", month <= 3)) %>% 
+  augment(newdata = tibble(month = 6)) %>% 
+  pull(.fitted)
+
+actual_end <- filter(trends, state == "State B", month == 6) %>% 
+  pull(income_parallel)
+
+dd_trends_1 <- ggplot(trends, aes(x = as.factor(month), y = income_parallel, color = state, group = state)) +
+  geom_smooth(data = filter(trends, state == "State B", month <= 3), 
+              method = "lm", fullrange = TRUE, 
+              color = "#0074D9", size = 1, linetype = "22") +
+  geom_vline(xintercept = 3.5, size = 1) +
+  geom_line(size = 3) +
+  geom_segment(aes(x = 6, xend = 6, 
+                   y = actual_end, yend = hypothetical_end),
+               color = "#FF4136", size = 2) +
+  scale_color_manual(values = c("#3D9970", "#FF851B"), name = NULL) +
+  scale_y_continuous(labels = dollar) +
+  labs(x = "Month", y = "Income") +
+  theme_bw(base_size = 21, base_family = "Fira Sans Condensed")
+dd_trends_1
+```
+
+---
+
+```{r plot-trends-2, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+hypothetical_end <- lm(income_flat ~ month, 
+                       data = filter(trends, state == "State B", month <= 3)) %>% 
+  augment(newdata = tibble(month = 6)) %>% 
+  pull(.fitted)
+
+actual_end <- filter(trends, state == "State B", month == 6) %>% 
+  pull(income_flat)
+
+dd_trends_2 <- ggplot(trends, aes(x = as.factor(month), y = income_flat, color = state, group = state)) +
+  geom_smooth(data = filter(trends, state == "State B", month <= 3), 
+              method = "lm", fullrange = TRUE, 
+              color = "#0074D9", size = 1, linetype = "22") +
+  geom_vline(xintercept = 3.5, size = 1) +
+  geom_line(size = 3) +
+  geom_segment(aes(x = 6, xend = 6, 
+                   y = actual_end, yend = hypothetical_end),
+               color = "#FF4136", size = 2) +
+  scale_color_manual(values = c("#3D9970", "#FF851B"), name = NULL) +
+  scale_y_continuous(labels = dollar) +
+  labs(x = "Month", y = "Income") +
+  theme_bw(base_size = 21, base_family = "Fira Sans Condensed")
+dd_trends_2
+```
+
+---
+
+```{r plot-trends-6, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+hypothetical_end <- lm(income_down ~ month, 
+                       data = filter(trends, state == "State B", month <= 3)) %>% 
+  augment(newdata = tibble(month = 6)) %>% 
+  pull(.fitted)
+
+actual_end <- filter(trends, state == "State B", month == 6) %>% 
+  pull(income_down)
+
+dd_trends_3 <- ggplot(trends, aes(x = as.factor(month), y = income_down, color = state, group = state)) +
+  geom_smooth(data = filter(trends, state == "State B", month <= 3), 
+              method = "lm", fullrange = TRUE, 
+              color = "#0074D9", size = 1, linetype = "22") +
+  geom_vline(xintercept = 3.5, size = 1) +
+  geom_line(size = 3) +
+  geom_segment(aes(x = 6, xend = 6, 
+                   y = actual_end, yend = hypothetical_end),
+               color = "#FF4136", size = 2) +
+  scale_color_manual(values = c("#3D9970", "#FF851B"), name = NULL) +
+  scale_y_continuous(labels = dollar) +
+  labs(x = "Month", y = "Income") +
+  theme_bw(base_size = 21, base_family = "Fira Sans Condensed")
+dd_trends_3
+```
+
+---
+
+class: title title-6
+
+# Assumptions
+
+.box-inv-6.medium[Parallel trends]
+
+--
+
+.box-6[Check by pretending the treatment happened earlier;<br>if there's an effect, there's likely an underlying trend]
+
+---
+
+```{r plot-trends-2-back, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+state_a_start <- filter(trends, state == "State A", month == 1)$income_flat
+state_b_end <- filter(trends, state == "State B", month == 3)$income_flat
+hypothetical_start <- filter(trends, state == "State B", month == 2)$income_flat
+diff_states <-  filter(trends, state == "State B", month == 1)$income_flat - state_a_start
+hypothetical_end <- filter(trends, state == "State A", month == 2)$income_flat + diff_states
+
+ggplot(filter(trends, month <= 6),
+       aes(x = month, y = income_flat, color = state, group = state)) +
+  geom_ribbon(data = filter(trends, state == "State B", month <= 3),
+              aes(x = month, ymin = -Inf, ymax = Inf, color = NULL), 
+              fill = "#7FDBFF", alpha = 0.2) +
+  annotate(geom = "segment", x = 2, xend = 3,
+                   y = hypothetical_start, yend = hypothetical_end,
+               color = "#0074D9", size = 1, linetype = "22") +
+  geom_vline(xintercept = 2, size = 1) +
+  geom_line(size = 3) +
+  geom_segment(aes(x = 3, xend = 3,
+                   y = state_b_end, yend = hypothetical_end),
+               color = "#FF4136", size = 2, inherit.aes = FALSE) +
+  scale_color_manual(values = c("#3D9970", "#FF851B"), name = NULL) +
+  scale_x_continuous(breaks = 1:6) +
+  scale_y_continuous(labels = dollar) +
+  labs(x = "Month", y = "Income") +
+  theme_bw(base_size = 21, base_family = "Fira Sans Condensed")
+```
+
+---
+
+```{r plot-trends-6-back, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+state_a_start <- filter(trends, state == "State A", month == 1)$income_down
+state_b_end <- filter(trends, state == "State B", month == 3)$income_down
+hypothetical_start <- filter(trends, state == "State B", month == 2)$income_down
+diff_states <-  filter(trends, state == "State B", month == 1)$income_down - state_a_start
+hypothetical_end <- filter(trends, state == "State A", month == 1)$income_down + diff_states
+
+ggplot(filter(trends, month <= 6),
+       aes(x = month, y = income_down, color = state, group = state)) +
+  geom_ribbon(data = filter(trends, state == "State B", month <= 3),
+              aes(x = month, ymin = -Inf, ymax = Inf, color = NULL), 
+              fill = "#7FDBFF", alpha = 0.2) +
+  annotate(geom = "segment", x = 2, xend = 3,
+                   y = hypothetical_start, yend = hypothetical_end,
+               color = "#0074D9", size = 1, linetype = "22") +
+  geom_vline(xintercept = 2, size = 1) +
+  geom_line(size = 3) +
+  geom_segment(aes(x = 3, xend = 3,
+                   y = state_b_end, yend = hypothetical_end),
+               color = "#FF4136", size = 2, inherit.aes = FALSE) +
+  scale_color_manual(values = c("#3D9970", "#FF851B"), name = NULL) +
+  scale_x_continuous(breaks = 1:6) +
+  scale_y_continuous(labels = dollar) +
+  labs(x = "Month", y = "Income") +
+  theme_bw(base_size = 21, base_family = "Fira Sans Condensed")
+```
+
+---
+
+```{r plot-trends-1-back, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+hypothetical_start <- filter(trends, state == "State B", month == 2)$income_parallel
+hypothetical_end <- filter(trends, state == "State B", month == 3)$income_parallel
+
+ggplot(filter(trends, month <= 6),
+       aes(x = month, y = income_parallel, color = state, group = state)) +
+  geom_ribbon(data = filter(trends, state == "State B", month <= 3),
+              aes(x = month, ymin = -Inf, ymax = Inf, color = NULL), 
+              fill = "#7FDBFF", alpha = 0.2) +
+  geom_vline(xintercept = 2, size = 1) +
+  geom_line(size = 3) +
+  annotate(geom = "segment", x = 2, xend = 3,
+                   y = hypothetical_start, yend = hypothetical_end,
+               color = "#0074D9", size = 1, linetype = "22") +
+  scale_color_manual(values = c("#3D9970", "#FF851B"), name = NULL) +
+  scale_x_continuous(breaks = 1:6) +
+  scale_y_continuous(labels = dollar) +
+  labs(x = "Month", y = "Income") +
+  theme_bw(base_size = 21, base_family = "Fira Sans Condensed")
+```
+
+
+---
+
+```{r dd-graph9, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+dd_labels2 <- tribble(
+  ~Group, ~Time, ~label,
+  "Treatment", "Before", "A",
+  "Treatment", "After", "B",
+  "Control", "Before", "C",
+  "Control", "After", "D"
+)
+
+dd_data2 <- tribble(
+  ~Group, ~Before, ~Intervention, ~After,
+  "Treatment", 30, 35, 50,
+  "Control",   20, 25, 30
+) %>% 
+  pivot_longer(cols = !Group, names_to = "Time", values_to = "avg") %>% 
+  left_join(dd_labels2, by = c("Group", "Time")) %>% 
+  mutate(across(c(Group, Time), ~fct_inorder(.)))
+
+ggplot(dd_data2, aes(x = Time, y = avg, color = Group, group = Group)) +
+  geom_vline(xintercept = "Intervention") +
+  geom_line(size = 3,
+            key_glyph = draw_key_point) +
+  annotate(geom = "segment", x = "Intervention", xend = "After",
+           y = 35, yend = 40, color = "#0074D9", size = 2, linetype = "22") +
+  annotate(geom = "segment", x = "After", xend = "After",
+           y = 40, yend = 50, color = "#FF4136", size = 2) +
+  annotate(geom = "label", x = "After", y = 45, label = "Causal\neffect",
+           family = "Fira Sans Condensed Bold", fontface = "plain", 
+           size = 5, fill = "#FF4136", color = "white") +
+  geom_point(data = filter(dd_data2, !is.na(label)), size = 15) +
+  geom_text(aes(label = label), family = "Fira Sans Condensed Bold", 
+            fontface = "plain", size = 10, color = "white") +
+  scale_color_manual(values = c("#0074D9", "#3D9970")) +
+  labs(x = NULL, y = "Outcome") +
+  coord_cartesian(ylim = c(15, 55)) +
+  theme_bw(base_size = 24, base_family = "Fira Sans Condensed")
+```
+
+---
+
+layout: false
+name: two-wrongs
+class: center middle section-title section-title-7 animated fadeIn
+
+# Beyond 2x2s
+
+---
+
+layout: false
+class: bg-full
+background-image: url("img/15/headstart-1.png")
+
+---
+
+layout: false
+class: bg-full
+background-image: url("img/15/headstart-2.png")
+
+---
+
+
+layout: false
+class: bg-full
+background-image: url("img/15/headstart-3.png")
+
+---
+
+
+layout: false
+class: bg-full
+background-image: url("img/15/headstart-4.png")
+
+---
+
+
+layout: false
+class: bg-full
+background-image: url("img/15/headstart-5.png")
+
+---
+
+layout: false
+class: bg-full
+background-image: url("img/15/headstart-6.png")
+
+
+---
+
+name: outline
+class: title title-7
+
+# Leaving simple 2x2s behind
+
+--
+
+.box-inv-7.medium.sp-after-half[Diff-in-diff with more than two units]
+
+--
+
+.box-inv-7.medium.sp-after-half[Units that "switch on" at different times]
+
+--
+
+.box-inv-7.medium.sp-after-half[More than one post-period]
+ 
+---
+
+```{r dd-graph-again9, echo=FALSE, fig.width=12, fig.height=6, out.width="100%"}
+dd_labels2 <- tribble(
+  ~Group, ~Time, ~label,
+  "Treatment", "Before", "A",
+  "Treatment", "After", "B",
+  "Control", "Before", "C",
+  "Control", "After", "D"
+)
+
+dd_data2 <- tribble(
+  ~Group, ~Before, ~Intervention, ~After,
+  "Treatment", 30, 35, 50,
+  "Control",   20, 25, 30
+) %>% 
+  pivot_longer(cols = !Group, names_to = "Time", values_to = "avg") %>% 
+  left_join(dd_labels2, by = c("Group", "Time")) %>% 
+  mutate(across(c(Group, Time), ~fct_inorder(.)))
+
+ggplot(dd_data2, aes(x = Time, y = avg, color = Group, group = Group)) +
+  geom_vline(xintercept = "Intervention") +
+  geom_line(size = 3,
+            key_glyph = draw_key_point) +
+  annotate(geom = "segment", x = "Intervention", xend = "After",
+           y = 35, yend = 40, color = "#0074D9", size = 2, linetype = "22") +
+  annotate(geom = "segment", x = "After", xend = "After",
+           y = 40, yend = 50, color = "#FF4136", size = 2) +
+  annotate(geom = "label", x = "After", y = 45, label = "Causal\neffect",
+           family = "Fira Sans Condensed Bold", fontface = "plain", 
+           size = 5, fill = "#FF4136", color = "white") +
+  geom_point(data = filter(dd_data2, !is.na(label)), size = 15) +
+  geom_text(aes(label = label), family = "Fira Sans Condensed Bold", 
+            fontface = "plain", size = 10, color = "white") +
+  scale_color_manual(values = c("#0074D9", "#3D9970")) +
+  labs(x = NULL, y = "Outcome") +
+  coord_cartesian(ylim = c(15, 55)) +
+  theme_bw(base_size = 24, base_family = "Fira Sans Condensed")
+```
+
+---
+
+![](`r knitr::fig_chunk("min-wage-dag1", "png")`)
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\alpha + \beta\ \color{#0074D9}{\text{Group}_i} + \gamma\ \color{#39CCCC}{\text{Time}_t} + \\
+&\delta\ \color{#FF4136}{(\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+--
+
+.center.sp-after[
+```{r dd-example-code8, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ group + time + (group * time))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" group ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" time ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(group * time)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+--
+
+&nbsp;
+
+<span class="box-3", style="background-color: #0074D9">Group = 1 or TRUE if treatment</span>
+
+--
+
+<span class="box-3", style="background-color: #39CCCC">Time = 1 or TRUE if after</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\color{#666666}{\alpha} + \color{#0074D9}{\beta\ \text{Group}_i} + \color{#39CCCC}{\gamma\ \text{Time}_t} + \\
+&\color{#FF4136}{\delta\ (\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+.center.sp-after[
+```{r dd-example-code-again9, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ group + time + (group * time))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" group ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" time ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(group * time)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+--
+
+<span class="box-3", style="background-color: #666666">α = Mean of control, pre-treatment</span>
+
+--
+
+<span class="box-3", style="background-color: #0074D9">β = Increase in outcome across groups</span>
+
+--
+
+<span class="box-3", style="background-color: #39CCCC">γ = Increase in outcome over time within units</span>
+
+--
+
+<span class="box-3", style="background-color: #FF4136">δ = Difference in differences!</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\color{#666666}{\alpha} + \color{#0074D9}{\beta\ \text{Group}_i} + \color{#39CCCC}{\gamma\ \text{Time}_t} + \\
+&\color{#FF4136}{\delta\ (\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+```{r dd-table-coefs9, echo=FALSE}
+dd <- tribble(
+  ~` `, ~`&ensp;Pre mean&ensp;`, ~`&ensp;Post mean&ensp;`, ~`&ensp;∆ <span class='smaller'>(post − pre)</span>&ensp;`,
+  "Control", "<b><span style='color: #666666;'>α</span></b>", "<b><span style='color: #666666;'>α</span> + <span style='color: #39CCCC;'>γ</span></b>", "<b><span style='color: #39CCCC;'>γ</span></b>",
+  "Treatment", "<b><span style='color: #666666;'>α</span> + <span style='color: #0074D9;'>β</span></b>", "<b><span style='color: #666666;'>α</span> + <span style='color: #0074D9;'>β</span> + <span style='color: #39CCCC;'>γ</span> + <span style='color: #FF4136'>δ</span></b>", "<b><span style='color: #39CCCC;'>γ</span> + <span style='color: #FF4136'>δ</span></b>",
+  "&ensp;∆ <span class='smaller'>(trtmt − ctrl)</span>&ensp;", "<b><span style='color: #0074D9;'>β</span></b>", "<b><span style='color: #0074D9;'>β</span> + <span style='color: #FF4136'>δ</span></b>", "<b><span style='color: #FF4136'>δ</span></b>"
+)
+
+dd %>% 
+  kbl(escape = FALSE, align = "cccc") %>% 
+  kable_styling(bootstrap_options = "none") %>% 
+  row_spec(1:2, background = "#FFFFFF") %>% 
+  row_spec(3, background = "#EEEEEE") %>% 
+  column_spec(4, background = "#EEEEEE") %>% 
+  row_spec(0, bold = TRUE, background = "#FFC6C6", color = "#CF4446") %>% 
+  column_spec(1, bold = TRUE, background = "#FFC6C6", color = "#CF4446")
+```
+
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\alpha + \beta\ \color{#0074D9}{\text{Group}_i} + \gamma\ \color{#39CCCC}{\text{Time}_t} + \\
+&\delta\ \color{#FF4136}{(\text{Group}_i \times \text{Time}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+--
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\alpha + \beta_1\ \color{#0074D9}{\text{Subgroup 1}_i} + \beta_2\ \color{#0074D9}{\text{Subgroup 2}_i} + ... + \\ &   \gamma_1\ \color{#39CCCC}{\text{Year 1}_t} + \gamma_2\ \color{#39CCCC}{\text{Year 2}_t} + ... + \\
+&\delta\ \color{#FF4136}{(\text{Treatment}_i \times \text{Post}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+--
+
+.center.sp-after[
+```{r dd-example-code7, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ factor(group) + factor(time) + (treatment * post))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" factor(group) ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" factor(time) ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(treatment * post)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\alpha + \beta_1\ \color{#0074D9}{\text{Subgroup 1}_i} + \beta_2\ \color{#0074D9}{\text{Subgroup 2}_i} + ... + \\ &   \gamma_1\ \color{#39CCCC}{\text{Year 1}_t} + \gamma_2\ \color{#39CCCC}{\text{Year 2}_t} + ... + \\
+&\delta\ \color{#FF4136}{(\text{Treatment}_i \times \text{Post}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+--
+
+.center.sp-after[
+```{r dd-example-code9, echo=FALSE, tidy=FALSE}
+decorate('
+model <- lm(outcome ~ factor(group) + factor(time) + (treatment * post))
+', eval = FALSE) %>% 
+  flair("outcome", color = "#2ECC40", before = "<b>", after = "</b>") %>% 
+  flair(" factor(group) ", color = "#0074D9", before = "<b>", after = "</b>") %>% 
+  flair(" factor(time) ", color = "#39CCCC", before = "<b>", after = "</b>") %>% 
+  flair("(treatment * post)", color = "#FF4136", before = "<b>", after = "</b>")
+```
+]
+
+--
+
+<span class="box-3", style="background-color: #0074D9">TRUE indicates a given subgroup (e.g., born in Orange County)</span>
+
+--
+
+<span class="box-3", style="background-color: #39CCCC">TRUE indicates a given year</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{it}}\ =\ &\alpha + \beta_1\ \color{#0074D9}{\text{Subgroup 1}_i} + \beta_2\ \color{#0074D9}{\text{Subgroup 2}_i} + ... + \\ &   \gamma_1\ \color{#39CCCC}{\text{Year 1}_t} + \gamma_2\ \color{#39CCCC}{\text{Year 2}_t} + ... + \\
+&\delta\ \color{#FF4136}{(\text{Treatment}_i \times \text{Post}_t)} + \varepsilon_{it}
+\end{aligned}$$
+
+
+--
+
+<span class="box-3", style="background-color: #666666">α = Mean of reference group, year zero</span>
+
+--
+
+<span class="box-3", style="background-color: #0074D9">β = "Fixed effects" for all other subgroups</span>
+
+--
+
+<span class="box-3", style="background-color: #39CCCC">γ = "Fixed effects" for all years</span>
+
+--
+
+<span class="box-3", style="background-color: #FF4136">δ = Difference in differences!</span>
+
+---
+
+$$\begin{aligned}
+\color{#2ECC40}{Y_{ict}}\ =\ &\alpha + \color{#0074D9}{\beta_c} + \color{#39CCCC}{\gamma_t} + 
+&\delta\ \color{#FF4136}{(\text{Treatment}_i \times \text{Post}_t)} + \varepsilon_{ict}
+\end{aligned}$$
+
+--
+
+<span class="box-3", style="background-color: #666666">α = Mean of reference group, year zero</span>
+
+--
+
+<span class="box-3", style="background-color: #0074D9">β = "Fixed effects" for all other subgroups</span>
+
+--
+
+<span class="box-3", style="background-color: #39CCCC">γ = "Fixed effects" for all years</span>
+
+--
+
+<span class="box-3", style="background-color: #FF4136">δ = Difference in differences!</span>
+
+---
+
+name: outline
+class: title title-8
+
+# Plan for next class
+
+--
+
+.box-8.medium[**Prior assignments**]
+
+.box-inv-8.small.sp-after[Milestone 2, DAM 3 to be returned March 10/13, respectively]
+
+--
+
+.box-8.medium[**Course evaluations**]
+
+--
+
+.box-8.medium[**DAM 4**]
+
+.box-inv-8.small.sp-after[For many, this will be voluntary. Congrats!]
+
+--
+
+.box-8.medium[**Lab 10 vs. flash talks**]
+

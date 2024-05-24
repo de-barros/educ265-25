@@ -1,0 +1,26 @@
+---
+title: "Writing and presenting"
+---
+
+Throughout, aim for simple and precise language [in active voice](https://phdcomics.com/comics/archive/phd102221s.gif).
+
+## Academic writing
+
+I recommend the following books and resources on academic writing.
+
+- For those targeting psychology journals, the APA [Reporting Standards (JARS)](https://apastyle.apa.org/jars).
+- For those targeting economics, policy, and political science journals, these "[writing formulas](https://aeturrell.github.io/coding-for-economists/craft-writing-papers.html)" for academic papers are great. Related: You can find my Overleaf template for applied micro papers [here](https://www.overleaf.com/read/jmwtpfqkgtxf#ac4d6c).
+- Marc Bellemare wrote the "middle bits" formula above; his *Doing Economics: What You Should Have Learned in Grad School―But Didn’t* (MIT Press, 2022), <https://marcfbellemare.com/wordpress/research/doing-economics> expands on that (and it's great!).
+- Use [Grammarly](https://app.grammarly.com/) and the [Hemingway App](https://hemingwayapp.com/)
+- Re-read William Strunk Jr. and Elwyn Brooks White's *The Elements of Style* (Harcourt, Brace & Howe, 1920), <https://en.wikipedia.org/wiki/The_Elements_of_Style>.
+
+## Presenting
+
+Here are my two cents on academic presentations.
+
+- Use [action titles](https://sixminutes.dlugan.com/assertion-evidence-design-presentation-slides/). Avoid meaningless section headers such as "Outline", "Data", or "Results".
+- Your slide deck is not a "hand-out" or a "reader". If your audience can just read your slide deck, why should you present? 
+- I'm still making the jump to [Xaringan](https://bookdown.org/yihui/rmarkdown/xaringan.html) and [Quarto](https://quarto.org/docs/presentations/) (will I ever, fully?). While I'm still stuck with LaTeX, you can find one of my favorite presentation templates [here](https://github.com/ambropo/JambroBeamerTheme). [Here](https://www.overleaf.com/read/smkrqxmxhfwc#cb6ab7) is a sample Overleaf project from when I used this theme for a presentation at UNU-WIDER. 
+- In the past, I've also used Matt Blackwell's adaptation of the [Cousteau Beamer theme](https://github.com/mattblackwell/cousteau).
+- _Please_ ensure your figures and slides are accessible. If you're using R, go [here](https://datavizf23.classes.andrewheiss.com/resource/design.html) first; then, consider going with one of the [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) color schemes. If you're using Stata, the `plotplainblind` scheme from [blindschemes](https://doi.org/10.1177/1536867X1701700313) is a good start. 
+- Jesse Shapiro and Rachael Meager have nice presentations on how to give applied micro talks (listed [here](https://sites.google.com/site/amandayagan/writingadvice)).

@@ -1,0 +1,70 @@
+---
+title: "Applied Regression Analysis for Education and Social Scientific Research"
+subtitle: "Apply regression analysis to investigate causal relationships"
+details: |
+  EDUC 265 • Winter 2024<br>School of Education<br>University of California, Irvine
+sidebar: false
+toc: false
+page-layout: full
+format:
+  html:
+    template-partials:
+      - html/home/title-block.html
+course-logo: /files/img/eval-hires.png
+---
+
+```{r set-dependencies, include=FALSE}
+# Site-wide targets dependencies
+withr::with_dir(here::here(), {
+  targets::tar_load(project_zips)
+  targets::tar_load(xaringan_slides)
+  targets::tar_load(xaringan_pdfs)
+})
+```
+
+::: {.home}
+
+::: {.grid .course-details}
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+### Instructor
+
+- {{< fa user >}} &nbsp; [{{< var instructor.name_no_title >}}]({{< var instructor.url >}})
+- {{< fa university >}} &nbsp; {{< var instructor.office >}}
+- {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
+- {{< fa brands twitter >}} &nbsp; [{{< var instructor.twitter >}}](https://www.twitter.com/{{< var instructor.twitter >}})
+- {{< fa calendar-check >}} &nbsp; [Schedule an appointment]({{< var instructor.appointment_url >}})
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+### Teaching assistant
+
+- {{< fa user >}} &nbsp; [{{< var assistant.name_no_title >}}]({{< var assistant.url >}})
+- {{< fa university >}} &nbsp; {{< var assistant.office >}}
+- {{< fa envelope >}} &nbsp; <a href="mailto:{{< var assistant.email >}}">{{< var assistant.email >}}</a>
+- {{< fa brands twitter >}} &nbsp; [{{< var assistant.twitter >}}](https://www.twitter.com/{{< var assistant.twitter >}})
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+### Course details
+
+- {{< fa calendar >}} &nbsp; {{< var course.days >}}
+- {{< fa calendar-alt >}} &nbsp; {{< var course.dates >}}
+- {{< fa clock >}} &nbsp; {{< var course.time >}}
+- {{< fa location-dot >}} &nbsp; {{< var course.location >}}
+- {{< ai publons >}} &nbsp; [Perusall]({{< var course.slack >}})
+:::
+
+::: {.g-col-12 .g-col-md-4 .contact-policy}
+### Contacting me
+
+{{< var instructor.contact_policy >}}
+:::
+
+:::
+
+```{r echo=FALSE}
+knitr::include_graphics(here::here("files", "img", "educ265-text.png"), error = FALSE)
+```
+
+:::
