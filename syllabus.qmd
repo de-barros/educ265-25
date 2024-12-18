@@ -5,380 +5,345 @@ title: Syllabus
 ```{r setup, message=FALSE, warning=FALSE, include=FALSE}
 library(dplyr)
 library(tibble)
-library(pander)
+library(gt)
+library(gtExtras)
+
+opts_theme <- function(x) {
+  x |>
+    opt_table_font(font = c("Barlow", "serif")) |>
+    tab_options(column_labels.font.weight = "bold")
+}
 ```
 
-::: {.grid .course-details .course-details-smaller}
+:::: {.grid .course-details .course-details-smaller}
 
-::: {.g-col-6}
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
 ### Instructor
 
-- {{< fa user >}} &nbsp; [{{< var instructor.name_no_title >}}]({{< var instructor.url >}})
-- {{< fa university >}} &nbsp; {{< var instructor.office >}}
-- {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
-- {{< fa brands twitter >}} &nbsp; [{{< var instructor.twitter >}}](https://www.twitter.com/{{< var instructor.twitter >}})
-- {{< fa calendar-check >}} &nbsp; [Schedule an appointment]({{< var instructor.appointment_url >}})
+- [{{< fa user >}}]{.fa-li} [{{< var instructor.name >}}]({{< var instructor.url >}})
+- [{{< fa university >}}]{.fa-li} {{< var instructor.office >}}
+- [{{< fa envelope >}}]{.fa-li} <a href='mailto:{{< var instructor.email >}}'>{{< var instructor.email >}}</a>
+- [{{< iconify ph butterfly-bold size=1.2em title='Bluesky' >}}]{.fa-li} [Bluesky]({{< var instructor.bluesky >}})
+- [{{< iconify bi mastodon size=1.1em title='Mastodon' >}}]{.fa-li} [Mastodon]({{< var instructor.mastodon >}})
+
 :::
 
-::: {.g-col-6}
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
 ### Course details
 
-- {{< fa calendar-alt >}} &nbsp; {{< var course.dates >}}
-- {{< fa clock >}} &nbsp; {{< var course.time >}}
-- {{< fa location-dot >}} &nbsp; {{< var course.location >}}
-- {{< ai publons >}} &nbsp; [Perusall]({{< var course.slack >}})
-- {{< iconify simple-icons canvas >}} &nbsp; [Canvas]({{< var course.canvas >}})
+- [{{< fa calendar >}}]{.fa-li} {{< var course.days >}}
+- [{{< fa calendar-alt >}}]{.fa-li} {{< var course.dates >}}
+- [{{< fa clock >}}]{.fa-li} {{< var course.time >}}
+- [{{< fa location-dot >}}]{.fa-li} {{< var course.location >}}
 :::
 
+::: {.g-col-12 .g-col-md-4 .contact-policy}
+### Contacting me
+
+- [{{< fa calendar-check >}}]{.fa-li} [Schedule an appointment]({{< var instructor.appointment_url >}})
+- [{{< fa brands slack >}}]{.fa-li} [Slack]({{< var course.slack >}})
 :::
 
-::: {.callout-tip}
-
-## Please read the syllabus!
-
-This page has important information about the course, including structure, assignments, grading, and student hours, [among many others](https://twitter.com/PHDcomics/status/333007240502063106).
-
-<b><a href="https://www.cameo.com/v/5f2b392a0299b100202e624a?utm_campaign=video_share_to_copy" style="color: #981e32">Even Snoop Dogg wants you to read the syllabus!</a></b>
-
-:::
-
+::::
 
 ## Course objectives
 
-In this course, you will learn how to apply regression analysis to investigate causal relationships. You will develop three broad skill sets:
+By the end of this course, you (1) will be literate in the language of causal inference, (2) will communicate evaluation outcomes clearly, and (3) will understand the ethics and limits of data analysis by designing, critiquing, coding, and running rigorous, valid, and feasible evaluations of public sector programs focused on society’s most pressing problems.
 
-1. Understanding the theoretical framework of various regression models, and their assumptions.
-2. Using regression models to make causal statements.
-3. Applying regression models to real-world data sets with statistical software, in a reproducible manner.
+Specifically, you'll be able to:
 
-At the end of the course, you will have written a short research paper that uses regression analysis to investigate a causal relationship. You may either (a) write a replication paper and present extensions to an existing study, or (b) write a research paper that uses your own data. 
+- Explain the philosophy of causation
+- Identify and diagram program logic models
+- Outline theories of change with directed acyclic graphs (DAGs)
+- Summarize key threats to causal inference, identify these threats in evaluations, and mitigate these threats with research design
+- Develop rigorous and valid statistical measures
+- Run statistical models
+- Explain the theory, research design, methods, and results of evaluations to all types of stakeholders, from highly trained econometricians to the general public
+- Share your analyses and data with the public
+- Identify ethical issues and limits in data science and program evaluation
+- Become curious and confident in consuming and producing evaluations
 
-Specifically, at the end of the course, you should be able to do the following.
 
-- Explain various regression models to others. 
-- Interpret regression results and communicate them in plain language.
-- Conduct sample size calculations.
-- Explain what is needed to make causal statements.
-- Understand the main regression models used to investigate causal relationships.
-- Analyze real-world data using these tools.
-- Work with data in a reproducible manner.
-- Become curious and confident in consuming and producing quantitative research.
+## Course philosophy
 
-### Expectations
+Classical statistics classes spend substantial time covering probability theory, null hypothesis testing, and other statistical tests first developed hundreds of years ago. Some classes don't use software or actual real data and instead live in the world of mathematical proofs. They can be math-heavy and full of often unintuitive concepts and equations.
 
-In this course, you will be expected to
+In this class, we will take the opposite approach. We *begin* with data and learn how to tidy, wrangle, manipulate, and visualize it with code. Later in the semester we'll turn to the powerful toolbox of causal inference approaches, but continue to keep the focus on data as we do so.
 
-- participate in class, 
-- participate in our lab sessions, 
-- do all readings, and discuss them outside of class,
-- complete three practice assignments,
-- write four data-analytic memos,
-- take one in-class exam, 
-- meet with me at least once, and
-- complete two milestones, which lead up to one final paper.
+In other words, there's way less of this:
 
-### Connections to other classes
+$$
+f(x) = \dfrac{1}{\sqrt{2\pi}} e^{-\frac12 x^2}
+$$
 
-[EDUC 288A](https://catalogue.uci.edu/search/?P=EDUC%2010) (Educational, Social, and Behavioral Statistics) is a prerequisite for this course (with a grade of B or better). That said, we will also dedicate a class to brush up on everyone's foundational statistics skills. The course assumes prior knowledge of Stata or R. 
+And way more of this:
 
-The course provides an introduction to causal inference methods. [EDUC 287A](https://catalogue.uci.edu/search/?P=EDUC%20287A)  (Advanced Quantitative Data Analysis for Causal Inference) and [EDUC 287B](https://catalogue.uci.edu/search/?P=EDUC%20287B) (Causal Inference: Methods for Program Evaluation and Policy Research) provide more advanced training in this area. 
+```{r eval=FALSE}
+summary_monthly_temp <- weather |>
+  group_by(month) |>
+  summarize(mean = mean(temp),
+            std_dev = sd(temp))
+```
 
-### My promise
+Over the last decade there has been a revolution in statistical and scientific computing. Open source languages like R and Python have overtaken older (and expensive!) corporate software packages like SAS and SPSS, and there are now thousands of books and blog posts and other online resources with excellent tutorials about how to analyze pretty much any kind of data.
 
-I *promise* you can succeed in this course.
+This class will expose you to [R](https://cran.r-project.org/)—one of the most popular, sought-after, and in-demand statistical programming languages. Armed with the foundation of R skills you'll learn in this class, you'll know enough to be able to find how to analyze any sort of data-based question in the future.
 
-This course is all about practical application. You will notice "How will I ever use this?" is a question I consider for every class. 
+## Important pep talk!
 
-Now, you will have to tool up. You will hear about weird new concepts, use some unfamiliar maths, learn new software, and approach practical questions from a new perspective. Initially, some of this might pose challenges. Most everything will be new to you. But, it's perfectly normal not to grasp concepts immediately and make mistakes during your initial encounters. This is how you acquire new skills and build a strong toolkit. 
+I *promise* you can succeed in this class.
 
-Many parallels come to mind. Learning to ride a bike. Learning a new language. Learning how to use a hammer (and when to pick a different tool). Building muscle through training. All of these demand time, grit, and—oftentimes—productive failure. All of them are easier with friends, through apprenticeship, and by working with a coach. Similarly, if you find yourself struggling with some of the course content, that's a *good* sign. When you do, take a breather, talk to classmates, ask questions, or contact our teaching team for assistance. 
+Learning R can be difficult at first—it's like learning a new language, just like Spanish, French, or Chinese. Hadley Wickham—the chief data scientist at RStudio and the author of some amazing R packages you'll be using like `ggplot2`—[made this wise observation](https://r-posts.com/advice-to-young-and-old-programmers-a-conversation-with-hadley-wickham/):
 
-## Course structure
+> It’s easy when you start out programming to get really frustrated and think, “Oh it’s me, I’m really stupid,” or, “I’m not made out to program.” But, that is absolutely not the case. Everyone gets frustrated. I still get frustrated occasionally when writing R code. It’s just a natural part of programming. So, it happens to everyone and gets less and less over time. Don’t blame yourself. Just take a break, do something fun, and then come back and try again later.
 
-This syllabus reflects a plan for the quarter. Deviations may become necessary as the quarter progresses.
+Even experienced programmers and evaluators find themselves bashing their heads against seemingly intractable errors. If you're finding yourself taking way too long hitting your head against a wall and not understanding, take a break, talk to classmates, e-mail me, etc.
 
-### Flow of the course
+```{r echo=FALSE, out.width="80%", fig.align="center"}
+# https://twitter.com/allison_horst/status/1213275783675822080
+knitr::include_graphics("/files/img/syllabus/hosrt_error_tweet.png", error = FALSE)
+```
 
-The course will follow a basic flow each week, with small differences if an assignment is due or not. 
+[![Alison Horst: Gator error](/files/img/syllabus/gator_error.jpg)](https://twitter.com/allison_horst/status/1213275783675822080)
 
-- **Tuesday**: Submit last week's assignment by 11:55 PM (if due). 
-- **Wednesday**: Complete reading/watching course material for Thursday, submit your reactions by 11:55 PM. 
-- **Thursday morning**: Course meets in-person. Weekly assignment posted.
-- **Thursday afternoon**: Lab meets in-person.
-
-Aside from our class meetings on Thursday mornings and the lab in the afternoon, there are no other meetings or sections. However, you are required to meet with me at least once outside of class. 
-
-### Canvas
-
-Our Canvas page is [here](https://canvas.eee.uci.edu/courses/60371). There are just two purposes for Canvas:
-
-1. **Assignments and grades**. I post assignments. You submit your solutions. I post your grades.
-2. **Slides**. I post PDFs of my slides.
-
-Everything else is on this website here and on Perusall---not on Canvas.
-
-Nevertheless, I encourage you to update the Canvas settings and notifications to ensure you receive announcements and notifications. Click on ["settings"](https://canvas.eee.uci.edu/profile/settings) to add another email address and/or a cell phone number to receive notifications. Click on [“notifications”](https://canvas.eee.uci.edu/profile/communication) to configure how you receive Canvas notifications.
-
-### Perusall 
-
-We will use Perusall to discuss the class materials. Our dedicated course page is [here](https://canvas.eee.uci.edu/courses/60371/external_tools/16107?display=borderless). You will submit your reading reactions on Perusall (not on Canvas). I will use Perusall for any course communications and announcements. At any point, feel free to ask me questions over Perusall, either on a channel or as a DM. There is no course Discord or Slack.
-
-To avoid getting bombarded with notifications, you may adjust your settings on Perusall. To do so, click on your user profile in the top-right corner. From there, select "manage my notifications" and choose your preferred settings. 
 
 ## Course materials
 
-All reading assignments and videos are available on Perusall. You should engage with our course materials through this platform.
+All of the readings in this class are free.
 
 ### Books
 
-There are three official textbooks for the class. 
+There are two official textbooks for the class. Both are available digitally and both are free.
 
-- Rachel A. Gordon, *Regression Analysis for the Social Sciences* (Routledge, 2010). ([**Free UCI library access to the ebook**](https://docs.google.com/document/d/1dUe5jqWVOYnpxxYdvgPgjHCts3391ZB3dEn5MRSnDTg/edit?usp=sharing))
+- Paul J. Gertler et al., *Impact Evaluation in Practice*, 2nd ed. (Inter-American Development Bank; World Bank, 2016), <https://openknowledge.worldbank.org/handle/10986/25030>. ([**Free!**](https://openknowledge.worldbank.org/handle/10986/25030))
+- Nick Huntington-Klein, *The Effect: An Introduction to Research Design and Causality* (CRC Press, 2021), <https://theeffectbook.net/>. ([**Free as a HTML version!**](https://theeffectbook.net/) The print version is coming soon and is pre-orderable at Amazon.)
 
-- Nick Huntington-Klein, *The Effect: An Introduction to Research Design and Causality* (CRC Press, 2021), <https://theeffectbook.net/>. ([**Free as a HTML version!**](https://theeffectbook.net/))
+Both of these books are written at a more general, easy-to-understand level with relatively minimal math. *You do not need to understand all the equations and notation.* If your eyes start to gloss over the Greek letters and subscripts, it's okay. Try to learn them, but don't stress out about it too much.
 
-- Joshua Angrist and Jörn-Steffen Pischke, *Mastering 'Metrics: The Path from Cause to Effect* (Princeton University Press, 2014).
+In previous versions of this class I used two different books instead of *The Effect*, and they're still fantastic and I'd recommend checking them out. *The Mixtape* is a phenomenal, more detailed, more economics-focused, and mathier approach to these causal inference methods (and it's free!), while *'Metrics Matter* is a fairly canonical (and accessible!) book in the world of econometrics. I refer to these books a few times in the video lectures—don't worry, you'll get pretty much the same content in *The Effect*.
+
+- Scott Cunningham, *Causal Inference: The Mixtape* (New Haven, CT: Yale University Press, 2021), <https://mixtape.scunning.com/>. ([**Also free(!)**](https://mixtape.scunning.com/))
+- Joshua D. Angrist and Jörn-Steffen Pischke, Mastering ’Metrics: The Path from Cause to Effect (Princeton, NJ: Princeton University Press, 2015).
+
 
 ### Articles, book chapters, and other materials
 
-There will also occasionally be additional articles and videos to read and watch. When this happens, links to these other resources will be included on the reading page for that week. 
-
-### Stata
-
-This course will expose you to Stata—one of the most popular statistical programming languages for the social sciences. Armed with the foundation of Stata skills you'll learn in this class, you'll know enough to be able to find how to analyze any sort of data-based question in the future.
-
-You may use UCI's [Virtual Computing Lab](https://uci.apporto.com/) to access Stata for free. 
-
-There are tons of online resources to help you with Stata. Three of the most important are [UCLA's Stata training site](https://stats.idre.ucla.edu/stata/seminars/notes15), the [Statalist](https://www.statalist.org/) forum, and  [StackOverflow](https://stackoverflow.com/) (a Q&A site with hundreds of thousands of answers to all sorts of programming questions). Also, ChatGPT will sometimes fool you but, as it was likely [trained on and (is quickly replacing) StackOverflow](https://www.linkedin.com/posts/tom-alder_the-irony-is-crushing-stack-overflows-activity-7099208596369903616-EQH6), it is quite good at writing Stata code.
-
-An the [resources page](/resource/index.html), you will find a long list of additional resources. All of this is *way too much information*, but certainly good to have as a backup for any of your future work after our course. And, if all of this sounds overwhelming, don't worry. **Once we get to it, I will point you to all the materials you do need.**
+There will also occasionally be additional articles and videos to read and watch. When this happens, links to these other resources will be included on the reading page for that week.
 
 ### R and RStudio
 
-**Stata is all you need for this course. You do not need R.** Still, because of its increasing popularity, I will show you some [R](https://cran.r-project.org/) code during the course. 
+You will do all of your analysis with the open source (and free!) programming language [R](https://cran.r-project.org/). You will use [RStudio](https://www.rstudio.com/) as the main program to access R. Think of R as an engine and RStudio as a car dashboard—R handles all the calculations and the actual statistics, while RStudio provides a nice interface for running R code.
 
-[RStudio](https://www.rstudio.com/) is the main program to access R. Think of R as an engine and RStudio as a car dashboard—R handles all the calculations and the actual statistics, while RStudio provides a nice interface for running R code. R and RStudio are free, but they can sometimes be a pain to install and configure. To make life easier, you can use the free [Posit.cloud](http://posit.cloud/) service (aka RStudio Cloud), which lets you run a full instance of RStudio in your web browser. Alternatively, you will also find RStudio on UCI's [Virtual Computing Lab](https://uci.apporto.com/). This means you don't have to install anything on your computer to get started with R! You can [find instructions for installing R and RStudio here.](/resource/install.html)
+R is free, but it can sometimes be a pain to install and configure. To make life easier, you can (and should!) use the free [Posit.cloud](https://posit.cloud/) service, which lets you run a full instance of RStudio in your web browser. This means you won't have to install anything on your computer to get started with R! We will have a shared class workspace in Posit.cloud that will let you quickly copy templates for labs and problem sets.
 
-## Assignments and grades
+Posit.cloud is convenient, but it can be slow and it is not designed to be able to handle larger datasets or more complicated analysis. Over the course of the semester, you'll probably want to get around to installing R, RStudio, and other R packages on your computer and wean yourself off of Posit.cloud. This isn't necessary, but it's helpful.
 
-### Participation
+You can [find instructions for installing R, RStudio, and all the tidyverse packages here.](/resource/install.qmd)
 
-You should actively participate in class, do all the readings, and discuss them outside of class. To that end, you should offer reactions to at least 9 (of our 10) reading assignments on Perusall. Also, you may (and should) engage with questions you see posted by others. However, it'll be up to me to decide whether a Perusall comment engages with the assigned reading and adds to the discussion, meaningfully.[^Yey] 
+### Online help
 
-[^Yey]: "Yey" won't do.
+Data science and statistical programming can be difficult. Computers are stupid and little errors in your code can cause hours of headache (even if you've been doing this stuff for years!).
 
-### Practice assignments
+Fortunately there are tons of online resources to help you with this. Two of the most important are [StackOverflow](https://stackoverflow.com/) (a Q&A site with hundreds of thousands of answers to all sorts of programming questions) and [Posit Community](https://community.rstudio.com/) (a forum specifically designed for people using RStudio and the tidyverse (i.e. you)).
 
-At the beginning of the quarter, you will complete three practice assignments. These assignments will focus on hands-on Stata skills. They will also teach you how to produce reproducible work. You will complete these assignments at home, individually. You may (and should!) work together on the assignments, but *you must turn in your own answers.* You cannot work in groups of more than **three** people, and you must note who participated in the group in your assignment.
+If you use Mastodon or Twitter, post R-related questions and content with [#rstats](https://twitter.com/search?q=%23rstats). The community there is exceptionally generous and helpful.
 
-### Data-analytic memos
+Large language models (LLMs) like [ChatGPT](https://chat.openai.com/) or [GitHub Copilot](https://github.com/features/copilot) are generally relatively okay with R questions, but they will often hallucinate responses—they really likes to imagine packages that don't exist and then give you answers with them. Think of these tools as glorified autocomplete. [I'd encourage you to read the first few paragraphs here](https://www.infoworld.com/article/3694611/8-chatgpt-tools-for-r-programming.html) about a few important things to keep in mind when using ChatGPT, though. You are free to use these tools, but **do not submit work that is fully generated with ChatGPT. This counts as plagiarism and you will receive a 0 on the assignment.** 
 
-Over the quarter, you will write four "data-analytic memos" (DAMs). Each DAM will task you to use your newly-acquired data analysis skills. Many of the questions will be similar to what you may be asked to do on a future job (whether as an education researcher, analyst, or practitioner looking for evidence-based programming). You will also work with real-life education datasets. 
+Searching for help with R on Google can sometimes be tricky because the program name is, um, a single letter. Google is generally smart enough to figure out what you mean when you search for "r scatterplot", but if it does struggle, try searching for "rstats" instead (e.g. "rstats scatterplot").
 
-As with the practice assignments, you will complete these memos at home, individually. You may (and should!) work together with others, but *you must turn in your own answers.* You cannot work in groups of more than **three** people, and you must note who participated in the group.
+Additionally, we have a class chatroom at [Slack](https://gsuevalsp2024.slack.com) where anyone in the class can ask questions and anyone can answer. **I will monitor Slack regularly and will respond quickly.** (It's one of the rare Slack workspaces where I actually have notifications enabled!) Ask questions about the readings, exercises, and project. You'll likely have similar questions as your peers, and you'll likely be able to answer other peoples' questions too.
 
-### Plus-delta 
 
-Twice during the quarter, I will ask you to complete a survey. At the beginning of the course, your answers will help me better understand your personal background and interests. Towards the middle of the course, I will ask you for feedback on how to improve the course and make changes if needed. Finally, at the end of the quarter, please leave a course evaluation on EEE.
+## Course structure
 
-Personally, I like the plus-delta approach. Start by telling me what you like. These are things I should maintain and build on. Then, provide opportunities for improvements. These should be action-oriented suggestions as to how I can provide a more effective course. 
+We meet weekly from 7:15–9:45 PM on Thursdays in Aderhold 204. ***However***, despite policies and rhetoric to the contrary, [we're still in the middle of a severe global pandemic](https://themessenger.com/health/covid-pandemic-who-cdc-russia-world-health-organization), and the JN.1 variant of COVID-19 is raging. By mid-January, [roughly 1 in 3 people in the US will likely get COVID](https://bsky.app/profile/luckytran.bsky.social/post/3khzv2q4uk62i).
 
-This feedback is very important to me, and I appreciate your input. 
+Accordingly, this semester we're going to have a [flipped classroom](https://en.wikipedia.org/wiki/Flipped_classroom), which will let us maximize flexibility during this pandemic. 
 
-### Exam
+We will **not** have lectures during our regularly scheduled class time. Instead, you will do the readings and watch recorded lecture videos prior to each in-person class session. You can do the readings and watch the videos on your own schedule at whatever time works best for you. Many of you work full time and you have childcare and parental care responsibilities, leaving you with only evenings for coursework. I've designed this asynchronous system with *you specifically* in mind. I also can only really do teaching work at night when my kids are in bed—I recorded all these videos between like 10 PM and 2 AM. We're all in similar pandemic boats.
 
-You will also take one in-class exam, which serves as an important mid-quarter check of your understanding. This exam will be held during one of our lab sessions. It will be closed book and without access to the internet. I will provide more information about the exam as it approaches. 
+We will do several things during our Thursday in-person classes:
 
-### Your final paper
+- **R labs**: We'll spend a substantial time during each class learning and working with R together. You'll need to bring a computer.
+- **Q&A**: As you do the readings and watch the videos prior to class, you will inevitably have questions. In [your weekly check-in assignment](/assignment/weekly-check-in.qmd), you'll submit (at least) 3 of those questions to me prior to class. We'll spend a time in each class answering, clarifying, debating, and discussing your questions.
+- **Activities**: In some weeks, we'll do some in-class activities to help solidify concepts about logic models, DAGs, and other evaluation and causal inference principles.
 
-For the final course project, you may either (a) write a replication paper and present extensions to an existing study, or (b) write a research paper that uses your own data. Either route will ask you to carefully discuss how to make causal claims. 
+## Attendance and participation
 
-Throughout the quarter, there will be two milestones related to the final paper. During the final exam period you will finalize the paper and submit your document to me. 
+You're expected to come to class each Thursday prepared—having read the material and watched the videos—and ready to discuss the content and work with R. 
 
-The goal is to execute a *reproducible* research project that may also lead up to a publishable research article. You will work by yourself but you will be required to submit a replication package of your study, so I (or anyone else) can reproduce your tables and figures.
+Attendance and participation are important to your success in this course. However, again, we're still in the middle of a global pandemic. If you are sick or are incapable of participating meaningfully in class (e.g. you have stayed up all night and are going to fall asleep in class), please stay home. I will stream our in-person sessions on Thursdays via Webex (and will set up my own camera and microphone system to do it), so if you cannot attend, you can tune in if needed.
 
-If you decide to use primary data, you must adhere to UCI's [IRB](https://research.uci.edu/human-research-protections/do-you-need-irb-review/) regulations. Your project must use data that can be shared with other researchers.[^Data] 
+GSU has some process for getting absences excused because of illness, but I don't care about that process. If you're sick, I don't need a doctor's note or anything. If a relative dies and you have to attend a funeral, do it!—don't worry about sending me confirmation or anything. If your childcare situation falls through one week, focus on your kids!—again, don't worry about sending me confirmation. You're all adults—I trust you. Given the flipped nature of the course, you'll be able to catch up on the material.
 
-[^Data]: You may have to de-identify data. Also, you must have the necessary rights to share your data with me (or anyone else).  
+If you test positive for COVID-19, hunker down and focus on getting better! Please do not come to class. 
 
-### Calendar
+## Pandemic stuff
 
-You can find a detailed class calendar on the [schedule page](/schedule/index.html).
+### Masks and vaccines
 
-Here, I am providing a brief summary of the assignment dates.
-
-| Category          | Release date         | Due date            |
-|:------------------|:---------------------|:--------------------|
-| Survey 1          | Thu, Jan 04 09:00AM  | Tue, Jan 09 11:55PM |
-| Assignment 1      | Thu, Jan 11 09:00AM  | Tue, Jan 16 11:55PM |
-| Assignment 2      | Thu, Jan 18 09:00AM  | Tue, Jan 23 11:55PM |
-| Assignment 3      | Thu, Jan 25 09:00AM  | Tue, Jan 30 11:55PM |
-| Milestone 1       |                      | Sun, Feb 04 11:55PM |
-| DAM 1             | Thu, Feb 01 09:00AM  | Tue, Feb 06 11:55PM |
-| Survey 2          | Wed, Feb 07 09:00AM  | Sun, Feb 11 11:55PM |
-| 1:1 meeting       |                      | Wed, Feb 14 05:00PM |
-| Exam              | Thu, Feb 15 02:30PM  | Thu, Feb 15 03:50PM |
-| DAM 2             | Thu, Feb 15 09:00AM  | Tue, Feb 20 11:55PM |
-| Milestone 2       |                      | Sun, Mar 03 11:55PM |
-| DAM 3             | Thu, Feb 29 09:00AM  | Tue, Mar 05 11:55PM |
-| DAM 4             | Thu, Mar 07 09:00AM  | Tue, Mar 12 11:55PM |
-| Final paper       |                      | Fri, Mar 22 11:55PM |
-| Course evaluation |                      | Fri, Mar 22 11:55PM |
-
-All reading reactions are due by 11:55PM on the day before class. All times are in Pacific time.
-
-### Writing 
-
-Your assignments will involve a fair amount of writing. You should not take this writing lightly; an important part of your doctoral training is to learn how to produce publishable work that conveys arguments clearly. You are expected to review your assignments for typos and grammatical errors before submitting them. Aim for simple and precise language [in active voice](https://phdcomics.com/comics/archive/phd102221s.gif). As you do, feel free to use related online services (such as [Grammarly](https://app.grammarly.com/) or the [Hemingway App](https://hemingwayapp.com/)). You may also take full advantage of the various on-campus resources to help improve your writing, including the [Writing Center](http://www.writingcenter.uci.edu).
-
-### Grading
-
-You (the student) and I (the instructor) should care the most about what you *learn*, not what numerical/letter summary of that learning you get at the end of the quarter. So I would love to not have grades at all, but unfortunately we humans are very good at procrastinating on our good intentions when there is no incentive not to. Thus, we have grades to help solve this commitment problem and to encourage you to put effort into learning the course material. 
-
-Here is how each of your various course contributions and assignments contribute to your overall grade. There are no group assignments, and all contributions are graded individually.
-
-| Category                           | Percent of final grade |
-|:-----------------------------------|:-----------------------|
-| Reading reactions                  | 9%                     |
-| Participation, surveys, feedback   | 6%                     |
-| Assignments and DAMs               | 30%                    |
-| Exam                               | 25%                    |
-| Milestones 1 & 2                   | 2% each                |
-| Your final paper                   | 26%                    |
-
-:::{.callout-note}
-## Grace policy
-
-When calculating the final assignment and DAM portion of the overall grade, I will drop the lowest score and use the remaining six scores. You may also skip one of the ten reading reactions. Thus, if you have an emergency that forces you to miss a submission, your grade will not be affected.
-
+::: {.callout-note appearance="simple"}
+GSU does not require this and I can't require this but I am allowed to urge it so here's me urging it
 :::
 
-All grades will be posted through Canvas. 
+Please get the COVID-19 vaccination and a booster shot. It is free. It saves lives. (I am fully vaccinated and repeatedly-boosted.)
 
-**Bump-up policy**: I reserve the right to "bump up" the grades of students who have made valuable contributions to the course in the in-person course and discussions (on Perusall). This also applies to students who show tremendous progress and growth over the quarter. 
+GSU and the University System of Georgia do not have a mask mandate for students or faculty. However, I personally will be wearing a mask when [the CDC's wastewater surveillance ratings for Georgia](https://www.cdc.gov/nwss/rv/COVID19-currentlevels.html) are moderate or above.
 
-## Course policies
+**I strongly recommend/urge/encourage you to wear a mask in class on Thursdays** regardless of your vaccination status. I will place a box of disposable masks by the door if you would like one. 
 
-**Be nice. Be honest. Don't cheat.**
+Again, GSU does not require either vaccines or masks, and if you aren't vaccinated or don't wear a mask, there are no penalties.
 
-We will also follow UCI's [Code of Conduct](https://www.compliance.uci.edu/ethical-values.php).
+### Learning during a pandemic
 
-### Attendance and participation
+Life still sucks right now. None of us is really okay. **We're all just pretending.**
 
-Attendance and participation are important to your success in this course. You are expected to come to *all classes* prepared—having read the material—and ready to discuss the content. You are also expected to attend all *all lab sessions*. 
+You most likely know people who have lost their jobs, have tested positive for COVID-19, have been hospitalized, or have even died (I myself know people in all those categories). You all have increased (or possibly decreased) work responsibilities and increased family care responsibilities—you might be caring for extra people (young and/or old!) right now, and you are likely facing uncertain job prospects (or have been laid off!).
 
-Missing a class has the potential to put you significantly behind. Still, life happens and, therefore, you may miss one class and one lab session without contacting me (except for the midterm exam).
-
-If you test positive for COVID-19, hunker down and focus on getting better! Please do not come to class. If you have an absence due to such an unavoidable health or emergency situation, you should message me before class starts. Similarly, if you have to miss a class due to religious reasons, please remember to message me before the affected class starts.
-
-You are expected to arrive before the start of each class to allow us to begin on time. Unexcused absences and late arrivals will be considered in your course participation score.  
-
-If you have to miss the midterm exam, you will need to take a similar make-up exam during UCI's final exam period (I would assign a date and time). If at all possible, try to avoid this. There at least three reasons. First, I deliberately scheduled the class' only exam during a period in which you do not have to worry about other exams. Second, the make-up exam may also include the additional content we will have covered after the midterm exam. Third, the midterm exam is meant to prepare you for your final paper---you would miss an important opportunity to check your knowledge before finalizing your research project.   
-
-### Staying focused during class
-
-Evidence from multiple randomized experiments indicates that students who take notes on their laptops or tablets learn less than those who take notes using pen/pencil and paper. They are also more likely to adversely affect their peers’ learning and grades (see Prof. Susan M. Dynarski’s [summary of the evidence](http://brook.gs/2vS6I3e)). Therefore, using a laptop or tablet is prohibited during class. 
-
-There are only three exceptions: 
-
-1. I may prompt you to take out your laptop (e.g., to complete a survey).
-2. You may use a tablet that lays flat on your table, with a stylus pen (i.e., without typing on a keyboard).
-3. You have an [accommodation plan](https://dsc.uci.edu/accommodations/) requiring a tablet or laptop.
-
-Similarly, cell phone use is prohibited during class (unless I ask you to take out your phone). Please stow your phone away. 
-
-Finally, no eating is allowed during class. If you eat during class, you are likely to disrupt the classroom dynamic. You may bring a water bottle or coffee/tea in a covered container.
-
-Let's stay focused!
-
-### Late assignments
-
-You should budget enough time to submit all course assignments well ahead of each deadline. Late assignments will not be accepted, regardless of how late they are. No extensions will be granted due to religious holidays, sickness, or any other reasons. Instead, I will disregard your assignment with the lowest score. I suggest using this option cautiously, just in case something happens, you foresee needing time to observe a religious holiday, or any other issue that may keep you from submitting your assignment on time.    
-
-### Academic honesty
-
-Violation of the [UCI Academic Senate Policy on Academic Integrity](https://aisc.uci.edu/students/academic-integrity/index.php) will result in an F in the course and possible disciplinary action.[^cheat] Violating the Academic Integrity Policy is unacceptable, devaluing the teaching and learning experience for the entire community. All violations will be formally reported.
-
-When it comes to academic integrity and generative artificial intelligence (AI), I follow the [approach of UCI's Composition Program](https://dtei.uci.edu/chatgpt/). That is, I assume that work submitted by students—all process work, drafts, low-stakes writing, final versions, and all other submissions—will be generated by the students themselves, working individually or in groups. The following would be considered violations of academic integrity: if a student has another person/entity do the writing of any substantive portion of an assignment for them, which includes hiring a person or a company to write essays and drafts and/or other assignments, research-based or otherwise, and using AI affordances like ChatGPT. I make an exception for statistical programming---you may write and debug your code using AI-supported tools (such as ChatGPT or GitHub Copilot).
-
-[^cheat]: So seriously, just don't cheat or plagiarize! If you have not already, review [this](https://aisc.uci.edu/students/academic-integrity/index.php) website.  
-
-### Recordings
-
-We will record our in-person classes and labs. On Fridays, we will post the recordings on the YuJa tab of our Canvas page. You are not allowed to record the class yourself unless you have an [accommodation plan](https://dsc.uci.edu/accommodations/) that requires you to do so.  
-
-
-### Drop policy
-
-Following [UCI's policy](https://www.reg.uci.edu/enrollment/adc/adcpolicy.html), no drops are allowed after the second week of instruction.
-
-
-## Doing well
-
-### A personal note
+**I'm fully committed to making sure that you learn everything you were hoping to learn from this class!** I will make whatever accommodations I can to help you finish your problem sets, do well on your projects, and learn and understand the class material. Under ordinary conditions, I am flexible and lenient with grading and course expectations when students face difficult challenges. Under pandemic conditions, that flexibility and leniency is intensified.
 
 If you tell me you're having trouble, I will not judge you or think less of you. I hope you'll extend me the same grace.
 
 You *never* owe me personal information about your health (mental or physical). You are *always* welcome to talk to me about things that you're going through, though. If I can't help you, I usually know somebody who can.
 
-If you need extra help, or if you feel like you're behind or not understanding everything, **do not suffer in silence.** Talk to me! I will work with you. 
+If you need extra help, or if you need more time with something, or if you feel like you're behind or not understanding everything, **do not suffer in silence!** Talk to me! I will work with you. **I promise.**
+
+*Please* sign up for a time to meet with me during student hours at <https://calendly.com/andrewheiss/>. I'm also available through e-mail and Slack. I've enabled notifications on my Slack account, so I'll see your messages quickly!
+
+I want you to learn lots of things from this class, but I primarily want you to stay healthy, balanced, and grounded during this crisis.
+
+
+## Course policies
+
+**Be nice. Be honest. Don't cheat.**
+
+We will also follow [Georgia State's Code of Conduct](https://codeofconduct.gsu.edu/).
+
+This syllabus reflects a plan for the semester. Deviations may become necessary as the semester progresses.
 
 ### Student hours
 
-Please watch this video:
+Please watch this video: <small>(*this is not me, btw—this is a different Andrew*)</small>
 
 <iframe src="https://player.vimeo.com/video/270014784" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="display: block; margin: 0 auto 1rem;"></iframe>
 
-Student hours are set times dedicated to all of you (most professors call these "office hours"; I don't).[^studenthours] This means that I will be waiting to come by to talk to me---either remotely or in-person---with whatever questions you have. This is the best and easiest way to find me and the best chance for discussing class material and concerns.
+Student hours are set times dedicated to all of you (most professors call these "office hours"; I don't).[^studenthours] This means that I will be ~~in my office~~ at home (wistfully) waiting for you to ~~come by~~ talk to me remotely with whatever questions you have. This is the best and easiest way to find me and the best chance for discussing class material and concerns.
 
 [^studenthours]: There's fairly widespread misunderstanding about what office hours actually are! [Many students often think that they are the times I *shouldn't* be disturbed](https://www.chronicle.com/article/Can-This-Man-Change-How-Elite/245714/), which is the exact opposite of what they're for!
 
-It is easiest to meet with me online. [Make an appointment with me here](https://calendly.com/de-barros/)—the confirmation e-mail will contain a link for a Zoom meeting (the default). If you prefer an in-person meeting, (1) schedule a Zoom meeting first, then (2) contact me via e-mail or Perusall, at least one day before our meeting.
+Because of the pandemic, I am not on campus often and generally cannot meet in person. I will generally be on campus at least once a week though (typically on Thursdays), and I can always meet you online via Webex. [Make an appointment with me here](https://calendly.com/andrewheiss/). You can choose an online or in-person slot—if you choose an online slot, the confirmation e-mail will contain a link for a Webex meeting. You can also find me through e-mail and Slack.
 
-### On-campus resources
+### Late work
 
-Life at UCI can be complicated and challenging. Fortunately, UCI offers a wealth of resources to support you. 
+My general philosophy towards late work is that I don't care if stuff is late—if you turn it in, great! In past versions of this class (and other of my classes), I would have no late penalties and accept late work until the very end of the semester. 
 
-Please take the time to seriously consider the following (confidential) resources available to you. 
+While many students have appreciated the flexibility of this system, I've received a lot of feedback from students that such a system actually hurts them. With total freedom and no hard deadlines, lots of people put off assignments until the end and then end up not learning much and feel incredibly stressed for weeks and weeks.
 
--	[Emergency food and toiletries](https://basicneeds.uci.edu/fresh-pantry/)
--	[More broadly, services at the UCI Basic Needs Center](https://basicneeds.uci.edu/all-services/)
--	[Services at the UCI Counseling Center](https://counseling.uci.edu)
--	[Support to become a better writer](http://www.writingcenter.uci.edu)
-- [Guides at UCI Libraries](https://guides.lib.uci.edu/), including on [academic writing](https://guides.lib.uci.edu/scientificwriting) and how to [cite your sources](https://guides.lib.uci.edu/citations)
-- [Tutoring and mentoring options](https://larc.uci.edu/all-services/)
--	[Resources at UCI's Cross-Cultural Center](https://ccc.uci.edu)
--	[Resources for DACA students](http://dreamers.uci.edu)
--	[Resources for first-generation college students](http://firstgen.due.uci.edu)
--	[Resources for those caring for (or expecting) little anteaters](http://transferhub.uci.edu/resources/student-parent-resources/)
+So to counter this, I use kinda-sorta-hard-ish deadlines to help you stay on schedule but also provide flexibility when needed.
 
-One of the (very few) things I regret from college is that I did not ask for enough help. I'm sure at least one of the above can help you do better---do reach out.
+You will lose 0.5 points per day for each day a problem set is late. This is designed to not be a huge penalty (3 days late = 28.5/30 points on a problem set that gets a ✓), but instead is a commitment device to help you stay on schedule.
 
-### Safety
-
-**I will listen to and believe you if someone is threatening you.**
-
-If you are in immediate danger, call 911. UCI police provides a 24-hour safety escort (949-824-5223) and a 24-hour *non*-emergency line (also at 949-824-5223). Safe this number.
-
-Please double-check and make sure you are signed up to [zotAlert](https://www.oit.uci.edu/services/communication-collaboration/zotalert/).
-
-If you are experiencing sexual assault or misconduct, domestic or relationship violence, stalking, or retaliation, please report it to me and I will connect you to resources. The University of California, Irvine is committed to creating and maintaining an environment in which all persons who live, work, and learn in our campus community can be free of sexual assault, sexual misconduct, relationship violence, stalking, and retaliation. Every member of the University community should be aware that sexual violence is prohibited by law as well as our University policy and will not be tolerated. 
-
-At any time---even if you are in doubt, or would like to know more about what you can do to *prevent* cases---do not hesitate to reach out to [UCI Care](https://care.uci.edu/) and the [Sexual Harassment/Title IX Officer (SHO)](https://www.oeod.uci.edu/sho/index.php).   
-
-### Accommodations and accessibility
-
-If you wish to request academic accommodations you may do so through the [Disability Services Center (DSC)](https://dsc.uci.edu/accommodations/). To obtain services, please [register with DSC](https://dsc.uci.edu/register/) and complete the [DSC Intake Form](https://portal.dsc.uci.edu/intake/). You should then make an appointment with me during the first week of class to discuss any accommodations that need to be made.
-
-I will do everything possible to make sure our course materials are accessible. *Please* let me know if you know of ways to improve on this further. Even a short message on, say, the colors I use on a slide can help a lot.  
+I will (typically) not accept work that is more than two weeks late. Again, this is not designed to be punitive—this is to help keep you on schedule. Being four or five weeks behind will make in-person time far less valuable and only make you fall even more behind. HOWEVER if you have extenuating circumstances, I'm more than happy to accommodate.
 
 
-## Petr
+### Counseling and Psychological Services (CPS)
 
-Once you have read this entire syllabus and [the assignments page](/assignment/index.html), please [click here](mailto:adb@uci.edu) and e-mail me your *favorite* picture of Peter the Anteater.[^Petr] Extra credit if it's animated.
+Life at GSU can be complicated and challenging (especially during a pandemic!). You might feel overwhelmed, experience anxiety or depression, or struggle with relationships or family responsibilities. [Counseling and Psychological Services (CPS)](https://education.gsu.edu/cps/) provides free, *confidential* support for students who are struggling with mental health and emotional challenges. The CPS office is staffed by professional psychologists who are attuned to the needs of all types of college and professional students. Please do not hesitate to contact CPS for assistance—getting help is a smart and courageous thing to do.
 
-[^Petr]: Petr stickers are *great*. [Fun facts](https://www.reddit.com/r/UCI/comments/spp8db/fun_uci_history_our_mascot_is_the_anteater/) count, too.
+### Basic needs security
 
-<figure>
-<img src="https://media.giphy.com/media/u48zGxF3kJ80XemhJ3/giphy.gif" alt="Peter the Anteater giving a thumbs-up">
-</figure>
+If you have difficulty affording groceries or accessing sufficient food to eat every day, or if you lack a safe and stable place to live, and you believe this may affect your performance in this course, please contact the [Dean of Students](https://deanofstudents.gsu.edu/) for support. They can provide a host of services including free groceries from the [Panther Pantry](https://nutrition.gsu.edu/panther-pantry/) and assisting with homelessness with the [Embark Network](https://deanofstudents.gsu.edu/student-assistance/embark/). Additionally, please talk to me if you are comfortable in doing so. This will enable me to provide any resources that I might possess.
+
+### Lauren's Promise
+
+**I will listen and believe you if someone is threatening you.**
+
+Lauren McCluskey, a 21-year-old honors student athlete, [was murdered on October 22, 2018 by a man she briefly dated on the University of Utah campus](https://www.sltrib.com/opinion/commentary/2019/02/10/commentary-failing-lauren/). We must all take action to ensure that this never happens again.
+
+If you are in immediate danger, call 911 or GSU police (404-413-3333).
+
+If you are experiencing sexual assault, domestic violence, or stalking, please report it to me and I will connect you to resources or call [GSU's Counseling and Psychological Services](https://counselingcenter.gsu.edu/crisis-services/concern-self/immediate-help/) (404-413-1640).
+
+Any form of sexual harassment or violence will not be excused or tolerated at Georgia State. GSU has instituted procedures to respond to violations of these laws and standards, programs aimed at the prevention of such conduct, and intervention on behalf of the victims. Georgia State University Police officers will treat victims of sexual assault, domestic violence, and stalking with respect and dignity. Advocates on campus and in the community can help with victims' physical and emotional health, reporting options, and academic concerns.
+
+### Academic honesty
+
+Violation of [GSU's Policy on Academic Honesty](https://deanofstudents.gsu.edu/faculty-staff-resources/academic-honesty/) will result in an F in the course and possible disciplinary action. All violations will be formally reported to the Dean of Students.
+
+Do not turn assignments in that are fully generated with AI tools like ChatGPT or GitHub Copilot. This counts as plagiarism and you will receive a 0 on the assignment. I can tell when that happens (these tools generate code that has a particularly recognizable style or "flavor"). You can use these tools, but make sure you adapt the suggested code to fit your specific assignment.
+
+### Special needs
+
+Students who wish to request accommodation for a disability may do so by registering with the [Office of Disability Services](https://disability.gsu.edu/). Students may only be accommodated upon issuance by the Office of Disability Services of a signed [Accommodation Plan](https://disability.gsu.edu/services/how-to-register/) and are responsible for providing a copy of that plan to instructors of all classes in which accommodations are sought.
+
+Students with special needs should then make an appointment with me during the first week of class to discuss any accommodations that need to be made.
+
+
+## Assignments and grades
+
+You can find descriptions for all the assignments on the [assignments page](/assignment/).
+
+```{r assignments-grades, include=FALSE}
+assignments <- tribble(
+  ~Points,   ~Assignment, ~Group,
+  14 * 10,   "Weekly check-ins (14 × 10)", "Check-ins",
+  9 * 30,    "Problem sets (9 × 30)", "Assignments",
+  4 * 30,    "Evaluation assignments (4 × 30)", "Assignments",
+  100,       "Exam 1", "Exams",
+  100,       "Exam 2", "Exams",
+  200,       "Final project", "Projects"
+) |>
+  mutate(Percent = Points / sum(Points))
+
+grading <- tribble(
+  ~Grade, ~Range, ~Grade1, ~Range1,
+  "A",  "93–100%", "C",  "73–76%",
+  "A−", "90–92%", "C−", "70–72%",
+  "B+", "87–89%", "D+", "67–69%",
+  "B",  "83–86%", "D",  "63–66%",
+  "B−", "80–82%", "D−", "60–62%",
+  "C+", "77–79%", "F",  "< 60%"
+)
+```
+
+```{r show-assignments-table, echo=FALSE}
+assignments |>
+  select(Assignment, Points, Percent, Group) |>
+  group_by(Group) |> 
+  gt() |> 
+  sub_missing(missing_text = "---") |> 
+  grand_summary_rows(
+    columns = c(Points, Percent), 
+    fns = list(Total ~ sum(.)),
+    fmt = list(Total ~ fmt_percent(., columns = Percent, decimals = 0))
+  ) |> 
+  fmt_percent(columns = Percent, decimals = 1) |> 
+  tab_style(
+    locations = list(cells_grand_summary(), cells_stub_grand_summary()),
+    style = cell_text(weight = "bold")
+  ) |> 
+  opts_theme() |> 
+  opt_horizontal_padding(2) |>
+  tab_options(
+    row_group.as_column = TRUE,
+    quarto.disable_processing = TRUE
+  )
+```
+
+```{r show-grades-table, echo=FALSE}
+grading |>
+  gt() |> 
+  cols_label(Grade1 = "Grade", Range1 = "Range") |> 
+  cols_align(align = "left", columns = c(Grade, Grade1)) |> 
+  cols_align(align = "center", columns = c(Range, Range1)) |> 
+  opts_theme() |> 
+  opt_horizontal_padding(3) |> 
+  gt_add_divider(columns = Range, style = "dashed", weight = px(1)) |> 
+  tab_options(quarto.disable_processing = TRUE)
+```
+
+
+## Star Wars
+
+Once you have read this entire syllabus and [the assignments page](/assignment/index.qmd), please [click here](mailto:aheiss@gsu.edu) and e-mail me a picture of a *cute* Star Wars character.^[Baby Yoda, Babu Frik, porgs, etc. are all super fair game.] Brownie points if it's animated.

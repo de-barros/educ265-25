@@ -1,18 +1,33 @@
 library(targets)
+# library(crew)
 library(tarchetypes)
 suppressPackageStartupMessages(library(tidyverse))
 
-class_number <- "EDUC 265"
-base_url <- "https://educ265.de-barros.com/"
+class_number <- "PMAP 8521"
+base_url <- "https://evalsp24.classes.andrewheiss.com/"
 page_suffix <- ".html"
 
-options(tidyverse.quiet = TRUE,
-        dplyr.summarise.inform = FALSE)
+options(
+  tidyverse.quiet = TRUE,
+  dplyr.summarise.inform = FALSE
+)
+
+# Set the _targets store so that scripts in subdirectories can access targets
+# without using withr::with_dir() (see https://github.com/ropensci/targets/discussions/885)
+#
+# This hardcodes the absolute path in _targets.yaml, so to make this more
+# portable, we rewrite it every time this pipeline is run (and we don't track
+# _targets.yaml with git)
+tar_config_set(
+  store = here::here("_targets"),
+  script = here::here("_targets.R")
+)
 
 tar_option_set(
-  packages = c("tibble"),
+  packages = c("tidyverse"),
   format = "rds",
-  workspace_on_error = TRUE
+  workspace_on_error = TRUE#,
+  # controller = crew_controller_local(workers = 1)
 )
 
 # here::here() returns an absolute path, which then gets stored in tar_meta and
@@ -24,107 +39,63 @@ here_rel <- function(...) {fs::path_rel(here::here(...))}
 
 # Load functions for the pipeline
 source("R/tar_slides.R")
-source("R/tar_projects.R")
 source("R/tar_data.R")
+source("R/tar_projects.R")
 source("R/tar_calendar.R")
 
 
 # THE MAIN PIPELINE ----
 list(
-  ## Run all the data building and copying targets ----
-  save_data,
+  ## Slides ----
+  # Render all the slides and make PDFs
+  build_slides,
 
-  ### Link all these data building and copying targets into individual dependencies ----
-  tar_combine(copy_data, tar_select_targets(save_data, starts_with("copy_"))),
-  tar_combine(build_data, tar_select_targets(save_data, starts_with("data_"))),
-
-
-  ## xaringan stuff ----
-  #
-  ### Knit xaringan slides ----
-  #
-  # Use dynamic branching to get a list of all .Rmd files in slides/ and knit them
-  #
-  # The main index.qmd page loads xaringan_slides as a target to link it as a dependency
-  tar_files(xaringan_files, list.files(here_rel("slides"),
-                                       pattern = "\\.Rmd",
-                                       full.names = TRUE)),
-  tar_target(xaringan_slides,
-             render_xaringan(xaringan_files),
-             pattern = map(xaringan_files),
-             format = "file"),
-
-  ### Convert xaringan HTML slides to PDF ----
-  #
-  # Use dynamic branching to get a list of all knitted slide .html files and
-  # convert them to PDF with pagedown
-  #
-  # The main index.qmd page loads xaringan_pdfs as a target to link it as a dependency
-  tar_files(xaringan_html_files, {
-    xaringan_slides
-    list.files(here_rel("slides"),
-               pattern = "\\.html",
-               full.names = TRUE)
-  }),
-  tar_target(xaringan_pdfs,
-             xaringan_to_pdf(xaringan_html_files),
-             pattern = map(xaringan_html_files),
-             format = "file"),
+  # The main index.qmd page loads all_slides as a target to link it as a dependency
+  tar_combine(
+    all_slides,
+    tar_select_targets(build_slides, starts_with("slide_pdf_"))
+  ),
 
 
   ## Project folders ----
+  # Create/copy data and zip up all the project folders
+  make_data_and_zip_projects,
 
-  ### Zip up each project folder ----
-  #
-  # Get a list of all folders in the project folder, create dynamic branches,
-  # then create a target for each that runs the custom zippy() function, which
-  # uses system2() to zip the folder and returns a path to keep targets happy
-  # with `format = "file"`
-  #
-  # The main index.qmd page loads project_zips as a target to link it as a dependency
-  #
-  # Use tar_force() and always run this because {targets} seems to overly cache
-  # the results of list.dirs()
-  tar_force(project_paths,
-            list.dirs(here_rel("projects"),
-                      full.names = FALSE, recursive = FALSE),
-            force = TRUE),
-  tar_target(project_files, project_paths, pattern = map(project_paths)),
-  tar_target(project_zips, {
-    copy_data
-    build_data
-    zippy(project_files, "projects")
-  },
-  pattern = map(project_files),
-  format = "file"),
+  # The main index.qmd page loads all_zipped_projects as a target to link it as a dependency
+  tar_combine(
+    all_zipped_projects,
+    tar_select_targets(make_data_and_zip_projects, starts_with("zip_"))
+  ),
 
 
   ## Class schedule calendar ----
   tar_target(schedule_file, here_rel("data", "schedule.csv"), format = "file"),
   tar_target(schedule_page_data, build_schedule_for_page(schedule_file)),
-  tar_target(schedule_ical_data, build_ical(schedule_file, base_url, page_suffix, class_number)),
-  tar_target(schedule_ical_file,
-             save_ical(schedule_ical_data,
-                       here_rel("files", "schedule.ics")),
-             format = "file"),
+  tar_target(
+    schedule_ical_data,
+    build_ical(schedule_file, base_url, page_suffix, class_number)
+  ),
+  tar_target(
+    schedule_ical_file,
+    save_ical(schedule_ical_data, here_rel("files", "schedule.ics")),
+    format = "file"
+  ),
 
 
-  ## Knit the README ----
-  tar_target(workflow_graph, tar_mermaid(targets_only = TRUE, outdated = FALSE,
-                                         legend = FALSE, color = FALSE)),
-  tar_render(readme, here_rel("README.Rmd")),
+  ## Render the README ----
+  tar_quarto(readme, here_rel("README.qmd")),
 
 
   ## Build site ----
-  tar_quarto(site, path = ".")
+  tar_quarto(site, path = ".", quiet = FALSE),
 
 
   ## Upload site ----
-  #tar_target(deploy_script, here_rel("deploy.sh"), format = "file"),
-  #tar_target(deploy_site, {
+  tar_target(deploy_script, here_rel("deploy.sh"), format = "file"),
+  tar_target(deploy_site, {
     # Force dependencies
-   # site
+    site
     # Run the deploy script
-    #if (Sys.getenv("UPLOAD_WEBSITES") == "TRUE") processx::run(paste0("./", deploy_script))
-  #})
+    if (Sys.getenv("UPLOAD_WEBSITES") == "TRUE") processx::run(paste0("./", deploy_script))
+  })
 )

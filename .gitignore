@@ -7,6 +7,8 @@
 /_site/
 /_freeze/
 
+_targets.yaml
+
 slides/*.pdf
 slides/*.html
 slides/**/*_cache/*
@@ -15,8 +17,7 @@ projects/*.zip
 # knitr and caching stuff
 **/*_files/*
 **/*_cache/*
-
-README.html
+!README_files/*
 
 files/incomplete-reports.zip
 

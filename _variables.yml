@@ -1,54 +1,34 @@
-author: Andreas de Barros
+author: Andrew Heiss
 
 instructor:
-  name: Dr. Andreas de Barros
-  name_no_title: Andreas de Barros
-  email: adb@uci.edu
-  url: "https://www.de-barros.com"
-  twitter: andydebarros
-  github: de-barros
-  office: "Education Building, Office 2042"
-  contact_policy: >-
-    E-mail and Perusall are the best ways to contact me. From Monday to Friday, I will try to respond to all course-related messages within 24 hours. At the same time, my work day may look different than your work day. Please do not feel obligated to respond out of your normal working hours.
-  appointment_url: https://calendly.com/de-barros/
-
-assistant:
-  name: Juan Camilo Cristancho Amaya
-  name_no_title: Juan Camilo Cristancho Amaya
-  email: jcristan@uci.edu
-  url: "https://education.uci.edu/phd-cristancho-j.html"
-  twitter: JuanCamiloCri10
-  github:  juancamilocri10
-  office: "Education Building, Office 2031"
-  contact_policy: >-
-    E-mail and Perusall are the best ways to contact me. From Monday to Friday, I will try to respond to all course-related messages within 24 hours. At the same time, my work day may look different than your work day. Please do not feel obligated to respond out of your normal working hours.
-  appointment_url: https://calendly.com/juancamilocri10
-
-attribution:
   name: Dr. Andrew Heiss
   name_no_title: Andrew Heiss
   email: aheiss@gsu.edu
-  url: "https://www.andrewheiss.com/"
-  twitter: andrewheiss
+  url: "https://www.andrewheiss.com"
+  mastodon: "https://fediscience.org/users/andrew/"
+  bluesky: "https://bsky.app/profile/andrew.heiss.phd"
   github: andrewheiss
+  office: "55 Park Place NE, Room 464"
+  contact_policy: >-
+    E-mail and Slack are the best ways to get in contact with me. I will try to respond to all course-related e-mails and Slack messages within 24 hours (*really*), but also remember that life can be busy and chaotic for everyone (including me!), so if I don't respond right away, don't worry!
+  appointment_url: https://calendly.com/andrewheiss/
 
 course:
-  number: "EDUC 265"
-  semester: "Winter 2024"
-  days: "Thu"
-  time: "9:00–11:50AM and 2:30-3:50PM"
-  location: "Education Building, Room 2024"
-  dates: "Thu, Jan 08–Mar 22, 2024"
-  github: "https://github.com/de-barros/educ265-24"
-  url: "https://educ265.de-barros.com"
+  number: "PMAP 8521"
+  semester: "Spring 2024"
+  days: "Thursdays"
+  time: "7:15–9:45 PM"
+  location: "Aderhold Learning Center 204"
+  dates: "January 8–April 30, 2024"
+  github: "https://www.github.com/andrewheiss/evalsp24.classes.andrewheiss.com"
+  url: "https://evalsp24.classes.andrewheiss.com"
   copyright_year: "2024"
-  canvas: "https://canvas.eee.uci.edu/courses/60371"
-  slack: "https://canvas.eee.uci.edu/courses/60371/external_tools/16107?display=borderless"
+  slack: "https://gsuevalsp2024.slack.com"
 
 university:
-  name: University of California, Irvine
-  url: "https://uci.edu/"
+  name: Georgia State University
+  url: "https://www.gsu.edu"
 
 school:
-  name: School of Education
-  url: "https://education.uci.edu/"
+  name: Andrew Young School of Policy Studies
+  url: "https://aysps.gsu.edu/"

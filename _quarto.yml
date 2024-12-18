@@ -3,6 +3,7 @@ project:
   render:
     - "*.qmd"
     - "!slides/"
+    - "!projects/"
   resources:
     - "files/"
     - "projects/"
@@ -12,34 +13,40 @@ project:
     - "slides/libs/"
     - "slides/css/"
     - "slides/*_files/"
+  preview:
+    port: 3333
 
-# See https://quarto.org/docs/projects/code-execution.html#freeze
 execute:
   freeze: auto  # Re-render only when source changes
 
 bibliography: files/bib/references.bib
 csl: files/bib/chicago-author-date.csl
-description-meta: "Apply regression analysis to investigate causal relationships"
 
 website:
-  title: "EDUC 265"
-  site-url: "https://educ265.de-barros.com/"
+  title: "Program Evaluation"
+  description: "Use modern statistical and data scientific tools to measure causal effects and evaluate public policy"
+  site-url: "https://evalsp24.classes.andrewheiss.com"
 
   favicon: "/files/icon-512.png"
 
   twitter-card:
-    image: "/files/social-image-f22.png"
+    image: "/files/social-image-sp24.png"
     card-style: summary_large_image
-    creator: "@andydebarros"
-    # site: "@andydebarros"
+    creator: "@andrewheiss"
+    # site: "@andrewheiss"
 
   open-graph:
-    image: "/files/social-image-f22.png"
+    image: "/files/social-image-sp24.png"
     locale: en_US
+  
+  repo-url: "https://github.com/andrewheiss/datavizf23.classes.andrewheiss.com"
+  repo-actions: [edit, issue]
+  
+  page-navigation: true
 
   navbar:
     pinned: true
-    background: "#0064a4"
+    background: "#EE6A24"
     right:
       - syllabus.qmd
       - schedule.qmd
@@ -47,14 +54,18 @@ website:
         file: content/index.qmd
       - text: "Assignments"
         file: assignment/index.qmd
+      - text: "Examples"
+        file: example/index.qmd
       - text: "Resources"
         file: resource/index.qmd
-      - text: "{{< iconify academicons publons >}}"
-        href: "https://canvas.eee.uci.edu/courses/60371/external_tools/16107?display=borderless"
-        aria-label: Perusall
-      - text: "{{< iconify simple-icons canvas >}}"
-        href: "https://canvas.eee.uci.edu/courses/60371"
-        aria-label: Canvas
+      - text: "News & FAQs"
+        file: news/index.qmd
+      - icon: slack
+        href: "https://gsuevalsp2024.slack.com"
+        aria-label: Slack
+      - icon: cloud-fill
+        href: "https://posit.cloud"
+        aria-label: Posit.cloud
 
   sidebar:
     - title: "Content"
@@ -67,70 +78,120 @@ website:
             - content/index.qmd
         - section: "Course content"
           contents:
-            - text: "1: The causal revolution"
+            - text: "1: Evaluation and the causal revolution"
               file: content/01-content.qmd
-            - text: "2: Review of regression analysis"
+            - text: "2: Regression and inference"
               file: content/02-content.qmd
-            - text: "3: Interactions and transformations"
+            - text: "3: Theories of change and logic models"
               file: content/03-content.qmd
-            - text: "4: Discrete outcomes and regression adjustment"
+            - text: "4: Measurement and DAGs"
               file: content/04-content.qmd
-            - text: "5: Fixed effects, value added, and randomized experiments"
+            - text: "5: DAGs and potential outcomes"
               file: content/05-content.qmd
-            - text: "6: Sample size calculations and clustered data"
+            - text: "6: Threats to validity"
               file: content/06-content.qmd
-            - text: "7: Instrumental variables"
+            - text: "7: Randomization and matching"
               file: content/07-content.qmd
-            - text: "8: Regression discontinuity"
+            - text: "8: Diff-in-diff I"
               file: content/08-content.qmd
-            - text: "9: Difference in differences"
+            - text: "9: Diff-in-diff II"
               file: content/09-content.qmd
-            - text: "10: Open science and multiple hypothesis testing"
+            - text: "10: RDD I"
               file: content/10-content.qmd
+            - text: "11: IV I"
+              file: content/11-content.qmd
+            - text: "12: IV II & RDD II"
+              file: content/12-content.qmd
+            - text: "13: Choosing and planning ethical evaluations"
+              file: content/13-content.qmd
+            - text: "14: Ethics, stories, and curiosity"
+              file: content/14-content.qmd
 
     - title: "Assignments"
       contents:
-        - section: "Assignments"
+        - section: "Overview"
           contents:
             - assignment/index.qmd
-            - assignment/weekly-check-in.qmd
-            - assignment/dams.qmd
-            - assignment/exam.qmd
-        - section: "Final project"
+        - section: "Other projects"
           contents:
             - assignment/final-project.qmd
-            - assignment/replication.qmd
-            - assignment/paper.qmd
+            - assignment/weekly-check-in.qmd
+        - section: "Problem sets"
+          contents:
+            - assignment/01-problem-set.qmd
+            - assignment/02-problem-set.qmd
+            - assignment/03-problem-set.qmd
+            - assignment/04-problem-set.qmd
+            - assignment/05-problem-set.qmd
+            - assignment/06-problem-set.qmd
+            - assignment/07-problem-set.qmd
+            - assignment/08-problem-set.qmd
+            - assignment/09-problem-set.qmd
+        - section: "Evaluation"
+          contents:
+            - assignment/01-eval-background-theory.qmd
+            - assignment/02-eval-measurement.qmd
+            - assignment/03-eval-dag.qmd
+            - assignment/04-eval-threats.qmd
 
-    - title: "Resources"
+    - title: "Examples"
       contents:
         - section: "Overview"
           contents:
+            - example/index.qmd
+        - section: "Simulated data"
+          contents:
+            - text: "Random numbers"
+              file: example/random-numbers.qmd
+            - text: "Synthetic data"
+              file: example/synthetic-data.qmd
+        - section: "Examples"
+          contents:
+            - example/rstudio-tidyverse.qmd
+            - example/regression.qmd
+            - example/dags.qmd
+            - example/po-ate-cate.qmd
+            - text: "RCTs"
+              file: example/rcts.qmd
+            - text: "Matching and IPW"
+              file: example/matching-ipw.qmd
+            - text: "Robust standard errors"
+              file: example/standard-errors.qmd
+            - text: "Unobserved confounding"
+              file: example/confounding-sensitivity.qmd
+            - text: "Diff-in-diff"
+              file: example/diff-in-diff.qmd
+            - example/rdd.qmd
+            - example/iv.qmd
+            - text: "ITT and CACE"
+              file: example/cace.qmd
+            - example/rdd-fuzzy.qmd
+
+    - title: "Resources"
+      contents:
+        - section: "Resources"
+          contents:
             - resource/index.qmd
-        - section: "Causal inference"
-          contents:
-            - resource/beyond.qmd
-        - section: "R"
-          contents:
             - resource/r.qmd
-            - resource/install.qmd
             - resource/style.qmd
-            - resource/markdown.qmd
-            - resource/rmarkdown.qmd
-        - section: "Stata"
-          contents:
-            - resource/stata.qmd
-        - section: "Other topics"
-          contents:
-            - resource/citations.qmd
             - resource/data.qmd
+            - resource/citations.qmd
+            - resource/bayes.qmd
+            - resource/zilch.qmd
+        - section: "Study guides"
+          contents:
+            - resource/exam1.qmd
+            - resource/exam2.qmd
+        - section: "Guides"
+          contents:
+            - resource/install.qmd
+            - resource/markdown.qmd
+            - resource/quarto.qmd
             - resource/unzipping.qmd
-            - resource/writing.qmd
 
   page-footer:
     left: |
-      Original content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var attribution.name_no_title >}}]({{< var attribution.url >}}) <br>
-      Additional content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var instructor.name_no_title >}}]({{< var instructor.url >}}) <br>
+      Content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var instructor.name_no_title >}}]({{< var instructor.url >}}) <br>
       All content licensed under a {{< fa brands creative-commons >}}
       {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}}
       [Creative Commons Attribution-NonCommercial 4.0 International license (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)
