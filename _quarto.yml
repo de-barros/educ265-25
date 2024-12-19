@@ -23,25 +23,25 @@ bibliography: files/bib/references.bib
 csl: files/bib/chicago-author-date.csl
 
 website:
-  title: "Program Evaluation"
-  description: "Use modern statistical and data scientific tools to measure causal effects and evaluate public policy"
-  site-url: "https://evalsp24.classes.andrewheiss.com"
+  title: "EDUC 265"
+  description: "Apply regression analysis to investigate causal relationships"
+  site-url: "https://educ265.de-barros.com/"
 
   favicon: "/files/icon-512.png"
 
   twitter-card:
-    image: "/files/social-image-sp24.png"
+    image: "/files/social-image-f22.png"
     card-style: summary_large_image
-    creator: "@andrewheiss"
-    # site: "@andrewheiss"
+    creator: "@andydebarros"
+    # site: "@andydebarros"
 
   open-graph:
-    image: "/files/social-image-sp24.png"
+    image: "/files/social-image-f22.png"
     locale: en_US
-  
-  repo-url: "https://github.com/andrewheiss/datavizf23.classes.andrewheiss.com"
+
+  repo-url: "https://github.com/de-barros/educ265-25"
   repo-actions: [edit, issue]
-  
+
   page-navigation: true
 
   navbar:
@@ -78,34 +78,26 @@ website:
             - content/index.qmd
         - section: "Course content"
           contents:
-            - text: "1: Evaluation and the causal revolution"
+            - text: "1: The causal revolution"
               file: content/01-content.qmd
-            - text: "2: Regression and inference"
+            - text: "2: Review of regression analysis"
               file: content/02-content.qmd
-            - text: "3: Theories of change and logic models"
+            - text: "3: Interactions and transformations"
               file: content/03-content.qmd
-            - text: "4: Measurement and DAGs"
+            - text: "4: Discrete outcomes and regression adjustment"
               file: content/04-content.qmd
-            - text: "5: DAGs and potential outcomes"
+            - text: "5: Fixed effects, value added, and randomized experiments"
               file: content/05-content.qmd
-            - text: "6: Threats to validity"
+            - text: "6: Sample size calculations and clustered data"
               file: content/06-content.qmd
-            - text: "7: Randomization and matching"
+            - text: "7: Instrumental variables"
               file: content/07-content.qmd
-            - text: "8: Diff-in-diff I"
+            - text: "8: Regression discontinuity"
               file: content/08-content.qmd
-            - text: "9: Diff-in-diff II"
+            - text: "9: Difference in differences"
               file: content/09-content.qmd
-            - text: "10: RDD I"
+            - text: "10: Open science and multiple hypothesis testing"
               file: content/10-content.qmd
-            - text: "11: IV I"
-              file: content/11-content.qmd
-            - text: "12: IV II & RDD II"
-              file: content/12-content.qmd
-            - text: "13: Choosing and planning ethical evaluations"
-              file: content/13-content.qmd
-            - text: "14: Ethics, stories, and curiosity"
-              file: content/14-content.qmd
 
     - title: "Assignments"
       contents:
@@ -191,7 +183,8 @@ website:
 
   page-footer:
     left: |
-      Content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var instructor.name_no_title >}}]({{< var instructor.url >}}) <br>
+      Original content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var attribution.name_no_title >}}]({{< var attribution.url >}}) <br>
+      Additional content {{< fa brands creative-commons >}} {{< var course.copyright_year >}} by [{{< var instructor.name_no_title >}}]({{< var instructor.url >}}) <br>
       All content licensed under a {{< fa brands creative-commons >}}
       {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}}
       [Creative Commons Attribution-NonCommercial 4.0 International license (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)

@@ -36,7 +36,7 @@ attribution:
 
 course:
   number: "EDUC 265"
-  semester: "Winter 2024"
+  semester: "Winter 2025"
   days: "Lecture: Wed. Lab: Thu."
   time: "9:00–11:50AM and 4:00-5:50PM"
   location: "Education Building, Room 2024"
@@ -45,7 +45,7 @@ course:
   url: "https://educ265.de-barros.com"
   copyright_year: "2025"
   canvas: "https://canvas.eee.uci.edu/courses/69919"
-  slack: "https://canvas.eee.uci.edu/courses/60371/external_tools/16107?display=borderless"
+  slack: "https://canvas.eee.uci.edu/courses/69919/external_tools/16107?display=borderless"
 
 university:
   name: University of California, Irvine
