@@ -46,7 +46,7 @@ website:
 
   navbar:
     pinned: true
-    background: "#EE6A24"
+    background: "#0064a4"
     right:
       - syllabus.qmd
       - schedule.qmd
@@ -54,18 +54,14 @@ website:
         file: content/index.qmd
       - text: "Assignments"
         file: assignment/index.qmd
-      - text: "Examples"
-        file: example/index.qmd
       - text: "Resources"
         file: resource/index.qmd
-      - text: "News & FAQs"
-        file: news/index.qmd
-      - icon: slack
-        href: "https://gsuevalsp2024.slack.com"
-        aria-label: Slack
-      - icon: cloud-fill
-        href: "https://posit.cloud"
-        aria-label: Posit.cloud
+      - text: "{{< iconify academicons publons >}}"
+        href: "https://canvas.eee.uci.edu/courses/69919/external_tools/16107?display=borderless"
+        aria-label: Perusall
+      - text: "{{< iconify simple-icons canvas >}}"
+        href: "https://canvas.eee.uci.edu/courses/69919"
+        aria-label: Canvas
 
   sidebar:
     - title: "Content"
@@ -101,85 +97,42 @@ website:
 
     - title: "Assignments"
       contents:
-        - section: "Overview"
+        - section: "Assignments"
           contents:
             - assignment/index.qmd
-        - section: "Other projects"
+            - assignment/weekly-check-in.qmd
+            - assignment/dams.qmd
+            - assignment/exam.qmd
+        - section: "Final project"
           contents:
             - assignment/final-project.qmd
-            - assignment/weekly-check-in.qmd
-        - section: "Problem sets"
-          contents:
-            - assignment/01-problem-set.qmd
-            - assignment/02-problem-set.qmd
-            - assignment/03-problem-set.qmd
-            - assignment/04-problem-set.qmd
-            - assignment/05-problem-set.qmd
-            - assignment/06-problem-set.qmd
-            - assignment/07-problem-set.qmd
-            - assignment/08-problem-set.qmd
-            - assignment/09-problem-set.qmd
-        - section: "Evaluation"
-          contents:
-            - assignment/01-eval-background-theory.qmd
-            - assignment/02-eval-measurement.qmd
-            - assignment/03-eval-dag.qmd
-            - assignment/04-eval-threats.qmd
-
-    - title: "Examples"
-      contents:
-        - section: "Overview"
-          contents:
-            - example/index.qmd
-        - section: "Simulated data"
-          contents:
-            - text: "Random numbers"
-              file: example/random-numbers.qmd
-            - text: "Synthetic data"
-              file: example/synthetic-data.qmd
-        - section: "Examples"
-          contents:
-            - example/rstudio-tidyverse.qmd
-            - example/regression.qmd
-            - example/dags.qmd
-            - example/po-ate-cate.qmd
-            - text: "RCTs"
-              file: example/rcts.qmd
-            - text: "Matching and IPW"
-              file: example/matching-ipw.qmd
-            - text: "Robust standard errors"
-              file: example/standard-errors.qmd
-            - text: "Unobserved confounding"
-              file: example/confounding-sensitivity.qmd
-            - text: "Diff-in-diff"
-              file: example/diff-in-diff.qmd
-            - example/rdd.qmd
-            - example/iv.qmd
-            - text: "ITT and CACE"
-              file: example/cace.qmd
-            - example/rdd-fuzzy.qmd
+            - assignment/replication.qmd
+            - assignment/paper.qmd
 
     - title: "Resources"
       contents:
-        - section: "Resources"
+        - section: "Overview"
           contents:
             - resource/index.qmd
+        - section: "Causal inference"
+          contents:
+            - resource/beyond.qmd
+        - section: "R"
+          contents:
             - resource/r.qmd
-            - resource/style.qmd
-            - resource/data.qmd
-            - resource/citations.qmd
-            - resource/bayes.qmd
-            - resource/zilch.qmd
-        - section: "Study guides"
-          contents:
-            - resource/exam1.qmd
-            - resource/exam2.qmd
-        - section: "Guides"
-          contents:
             - resource/install.qmd
+            - resource/style.qmd
             - resource/markdown.qmd
-            - resource/quarto.qmd
+            - resource/rmarkdown.qmd
+        - section: "Stata"
+          contents:
+            - resource/stata.qmd
+        - section: "Other topics"
+          contents:
+            - resource/citations.qmd
+            - resource/data.qmd
             - resource/unzipping.qmd
+            - resource/writing.qmd
 
   page-footer:
     left: |

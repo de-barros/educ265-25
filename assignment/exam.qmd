@@ -1,0 +1,109 @@
+---
+title: "Exam"
+---
+
+You will take one in-class exam, which serves as an important mid-quarter check of your understanding. The exam will be held during one of our lab sessions. It will be ~~closed-book~~ open-book and without access to the internet. 
+
+The exam covers the assigned materials, our classes, and your assignments. Here is a rough overview of things you should be familiar with. The exam will not cover "sample size calculations and clustered data".
+
+---
+
+## The causal revolution
+
+**You should understand…**
+
+- …the difference between identifying correlation (math) and identifying causation (philosophy and theory)
+- …what it means for a relationship to be causal
+- …what it means for an author to engage in a "motte-and-bailey" strategy 
+- …how a causal model encodes our understanding of a causal relationship
+- …how to identify backdoor paths between treatment/exposure and outcome
+- …why we close backdoor paths
+- …why adjusting for mediators can distort causal effects
+- …why adjusting for colliders can distort causal effects
+- …why adjusting for potential confounders can distort causal effects, if the confounder was measured post treatment
+- …the difference between individual-level causal effects, average treatment effects (ATE), conditional average treatment effect (CATE), average treatment on the treated effects (ATT), and average treatment on the untreated (ATU)
+- …what the "fundamental problem of causal inference" is and how we can attempt to address it
+- …what a counterfactual is, and how it relates to the potential outcomes framework
+
+**You should be able to…**
+
+- …draw a possible directed acyclic graph (DAG) 
+- …identify all pathways between treatment/exposure and outcome
+- …identify which nodes in the DAG need to be adjusted for (or closed)
+- …identify colliders and mediators (which should not be adjusted for)
+
+## Review of regression analysis
+
+**You should understand…**
+
+- …the difference between outcome/response/dependent and explanatory/predictor/independent variables
+- …what each of the components in a regression equation stand for, in both "flavors" of notation: 
+    - $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon$ for the statistical flavor
+    - $y = \alpha + \beta x_1 + \gamma x_2 + \epsilon$ for the econometrics flavor
+- …how sliders and switches work as metaphors for regression coefficients
+- …what it means to hold variables constant (or to control for variables)
+- …how "big data" (or even data on the full population) helps little with causal inference
+- …how standard errors can be thought of in terms of repeated draws from a population
+
+**You should be able to…**
+
+- …interpret regression coefficients
+- …interpret standard errors, p-values, and confidence intervals
+- …interpret other regression diagnostics like $R^2$
+- …write out the regression equation for a study that uses random assignment and for a study that uses regression analysis without random assignment
+
+## Interactions and transformations
+
+**You should understand…**
+
+- …the main motivation for (and against) using log-transformed and standardized variables
+- …the general idea behind and common applications of interactions 
+- …what "moderation" means (and how it differs from confounding)
+- …how additional subgroup analyses reflect multiple hypothesis testing and the implications for statistical significance 
+- how "slopes", "marginal effects", and "partial derivatives" are closely related
+
+**You should be able to…**
+
+- …transform variables
+- …interpret the results of regressions that use log-transformed and standardized variables
+- …interpret the results of regressions that use interaction terms
+- …write out the regression equation for an analysis that uses an interaction
+- …use regression results to calculate the expected means and probabilities for subgroups 
+
+## Discrete outcomes and regression adjustment
+
+**You should understand…**
+
+- …the benefits and limitations of linear probability models
+- …what link and index functions are in the context of generalized linear models 
+- …the difference between marginal effects at the mean and average marginal effects
+- …how Oster’s method uses coefficient stability and the R-squared to bound causal effects
+
+**You should be able to…**
+
+- …interpret the results of a linear probability model
+- …interpret marginal effects at the mean and average marginal effects in the context of logistic regression 
+- …use a rule of thumb to interpret the results of a logit model
+- …make predictions about coefficient movements as you close backdoors in a causal model
+- …use and interpret the results of Oster’s bounding method
+
+## Fixed effects, value added, and randomized experiments
+
+**You should understand…**
+
+- …how fixed effects work and how they relate to demeaning
+- …how fixed effects can “close backdoors” even if you do not have data on these backdoors
+- …how value-added estimation relates to fixed effects
+- …the “menu” of options you may choose from as you design a randomized trial, including their respective benefits and limitations
+- …the benefits of using regression to analyze the results of a randomized trial
+- …the motivation behind controlling for covariates even in the context of a randomized trial
+
+**You should be able to…**
+
+- …write the regression equation for a model that includes fixed effects
+- …(decide whether to) use fixed effects in your final project 
+- …interpret the results from value-added models, and describe their benefits and limitations
+- …read and interpret the results of academic articles that use a randomized controlled trial
+- …decide on and execute analyses for a randomized controlled trial
+
+
