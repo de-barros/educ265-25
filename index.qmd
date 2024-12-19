@@ -1,8 +1,8 @@
 ---
-title: "Program Evaluation for Public Service"
-subtitle: "Combine research design, causal inference, and econometric tools to measure the effects of social programs"
+title: "Applied Regression Analysis for Education and Social Scientific Research"
+subtitle: "Apply regression analysis to investigate causal relationships"
 details: |
-  PMAP 8521 • Spring 2024<br>Andrew Young School of Policy Studies<br>Georgia State University
+  EDUC 265 • Winter 2025<br>School of Education<br>University of California, Irvine
 sidebar: false
 toc: false
 page-layout: full
@@ -16,48 +16,55 @@ course-logo: /files/img/eval-hires.png
 ```{r set-dependencies, include=FALSE}
 # Site-wide targets dependencies
 withr::with_dir(here::here(), {
-  targets::tar_load(all_zipped_projects)
-  targets::tar_load(all_slides)
+  targets::tar_load(project_zips)
+  targets::tar_load(xaringan_slides)
+  targets::tar_load(xaringan_pdfs)
 })
 ```
 
-::::: {.home}
+::: {.home}
 
-:::: {.grid .course-details}
+::: {.grid .course-details}
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
 ### Instructor
 
-- [{{< fa user >}}]{.fa-li} [{{< var instructor.name >}}]({{< var instructor.url >}})
+- [{{< fa user >}}]{.fa-li} [{{< var instructor.name_no_title >}}]({{< var instructor.url >}})
 - [{{< fa university >}}]{.fa-li} {{< var instructor.office >}}
 - [{{< fa envelope >}}]{.fa-li} <a href='mailto:{{< var instructor.email >}}'>{{< var instructor.email >}}</a>
 - [{{< iconify ph butterfly-bold size=1.2em title='Bluesky' >}}]{.fa-li} [Bluesky]({{< var instructor.bluesky >}})
-- [{{< iconify bi mastodon size=1.1em title='Mastodon' >}}]{.fa-li} [Mastodon]({{< var instructor.mastodon >}})
+- [{{< fa calendar-check >}}]{.fa-li} [Schedule an appointment]({{< var instructor.appointment_url >}})
+:::
 
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+### Teaching assistant
+
+- {{< fa user >}} &nbsp; [{{< var assistant.name_no_title >}}]({{< var assistant.url >}})
+- {{< fa university >}} &nbsp; {{< var assistant.office >}}
+- {{< fa envelope >}} &nbsp; <a href="mailto:{{< var assistant.email >}}">{{< var assistant.email >}}</a>
+- {{< fa brands twitter >}} &nbsp; [{{< var assistant.twitter >}}](https://www.twitter.com/{{< var assistant.twitter >}})
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
 ### Course details
 
-- [{{< fa calendar >}}]{.fa-li} {{< var course.days >}}
-- [{{< fa calendar-alt >}}]{.fa-li} {{< var course.dates >}}
-- [{{< fa clock >}}]{.fa-li} {{< var course.time >}}
-- [{{< fa location-dot >}}]{.fa-li} {{< var course.location >}}
+- {{< fa calendar >}} &nbsp; {{< var course.days >}}
+- {{< fa calendar-alt >}} &nbsp; {{< var course.dates >}}
+- {{< fa clock >}} &nbsp; {{< var course.time >}}
+- {{< fa location-dot >}} &nbsp; {{< var course.location >}}
+- {{< ai publons >}} &nbsp; [Perusall]({{< var course.slack >}})
 :::
 
 ::: {.g-col-12 .g-col-md-4 .contact-policy}
 ### Contacting me
 
-- [{{< fa calendar-check >}}]{.fa-li} [Schedule an appointment]({{< var instructor.appointment_url >}})
-- [{{< fa brands slack >}}]{.fa-li} [Slack]({{< var course.slack >}})
-
 {{< var instructor.contact_policy >}}
 :::
 
-::::
+:::
 
 ```{r echo=FALSE}
-knitr::include_graphics(here::here("files", "img", "eval-flowchart.png"), error = FALSE)
+knitr::include_graphics(here::here("files", "img", "educ265-text.png"), error = FALSE)
 ```
 
-:::::
+:::
