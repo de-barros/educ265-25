@@ -1,6 +1,6 @@
 ---
 title: "Interactions and transformations"
-date: "2024-01-25"
+date: "2025-01-22"
 ---
 
 ## Readings
@@ -8,9 +8,9 @@ date: "2024-01-25"
 - {{< fa book >}} Chapters 8-9 in *Regression Analysis for the Social Science* [@gordon_regression_2010]
 - {{< fa book >}} Chapter 13.2.1-13.2.5 in *The Effect* [@Huntington-Klein:2021]
 
-## Videos
+## Optional material
 
-Videos 29-32 from [this](https://www.youtube.com/watch?v=dpnfjeEHqmQ&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=29) playlist accompany Chapter 13.2.1-13.2.5 in *The Effect*. Watching them is optional.
+- {{< fa brands youtube >}} Videos 29-32 from [this](https://www.youtube.com/watch?v=dpnfjeEHqmQ&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=29) playlist accompany Chapter 13.2.1-13.2.5 in *The Effect*. 
 
 ## Slides
 

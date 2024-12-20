@@ -1,6 +1,6 @@
 ---
 title: "Open science and multiple hypothesis testing"
-date: "2024-03-14"
+date: "2025-03-12"
 ---
 
 ## Readings
@@ -20,8 +20,6 @@ If you are interested, listen to the following podcast where "[h]ost Jeff Greene
 You may also read the following series of short blog posts.
 
 - {{< fa arrow-up-right-from-square >}} Daniel Stein. ["More Outcomes, More Problems: A Practical Guide to Multiple Hypothesis Testing in Impact Evaluations (Parts 1, 2, and 3),"](https://www.idinsight.org/article/more-outcomes-more-problems-a-practical-guide-to-multiple-hypothesis-testing-in-impact-evaluations-part-1/) *IDinsight*, November 12, 2019.
-
-Listening to the podcast and reading the blog posts is optional (but you may include them in your reading reactions).
 
 ## Slides
 

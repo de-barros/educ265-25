@@ -1,35 +1,17 @@
 ---
-title: "Fixed effects, value added, and randomized experiments"
-date: "2024-02-08"
+title: "Fixed effects, value added, and discrete outcomes"
+date: "2025-02-05"
 ---
 
 ## Readings
 
+- {{< fa book >}} Chapters 13.2.6 and 13.4 in *The Effect* [@Huntington-Klein:2021]
 - {{< fa book >}} Chapter 16 in *The Effect* [@Huntington-Klein:2021]
-- {{< fa book >}} Chapter 1 in *Mastering Metrics* (2015) [@AngristPischke:2015] 
-- {{< fa book >}} Chapter 4 in *Running Randomized Evaluations* [@glennerster_running_2013]
 
-```{r slides-videos, echo=FALSE, include=FALSE}
-source(here::here("R", "slide-things.R"))
-source(here::here("R", "youtube-playlist.R"))
+## Optional material
 
-playlist_id <- "PL-uRhZ_p-BM5ovNRg-G6hDib27OCvcyW8"
-
-slide_details <- tibble::tribble(
-  ~youtube_id,   ~title, ~slide, ~active,
-  "eGRd8jBdNYg", "Randomized Trials: The Ideal Weapon", "1", TRUE,
-  "s-_3s3OMeqs", "How to Read Economics Research Papers: Randomized Controlled Trials (RCTs)", "magic-randomization", FALSE
-)
-```
-
-## Videos
-
-```{r show-youtube-list, echo=FALSE, results="asis"}
-youtube_list(slide_details, playlist_id)
-```
-
-
-<br>In addition, Videos 45-46 from [this](https://www.youtube.com/watch?v=8oNmnR6kE9M&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=45) playlist accompany Chapter 13.2.1-13.2.5 in *The Effect*. Watching them is optional.
+- {{< fa brands youtube >}} Video 34 from [this](https://www.youtube.com/watch?v=rpNqkLQutqk&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=34) playlist accompanies Chapter 13.2.6 in *The Effect*. 
+- {{< fa brands youtube >}} Videos 45-46 from [this](https://www.youtube.com/watch?v=8oNmnR6kE9M&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=45) playlist accompany Chapter 16 in *The Effect*.
 
 ## Slides
 

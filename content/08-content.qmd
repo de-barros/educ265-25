@@ -1,17 +1,16 @@
 ---
 title: "Regression discontinuity"
-date: "2024-02-29"
+date: "2025-02-26"
 ---
 
 ## Readings
 
-- ~~{{< fa book >}} Chapter 4 in *Mastering Metrics* (2015) [@AngristPischke:2015]~~
-- ~~{{< fa book >}} Chapter 6 in *Impact Evaluation in Practice* [@wb-eval]~~
 - {{< fa book >}} Chapter 20 in *The Effect* [@Huntington-Klein:2021]
 
-## Videos
+## Optional material
 
-Videos 61-64 from [this](https://www.youtube.com/watch?v=9FA60aMsA2A&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=61) playlist accompany Chapter 20 in *The Effect*. Watching them is optional.
+- {{< fa brands youtube >}} Videos 61-64 from [this](https://www.youtube.com/watch?v=9FA60aMsA2A&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=61) playlist accompany Chapter 20 in *The Effect*. 
+- {{< fa book >}} Chapter 4 in *Mastering Metrics* (2015) [@AngristPischke:2015]
 
 ## Slides
 

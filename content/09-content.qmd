@@ -1,12 +1,10 @@
 ---
 title: "Difference in differences"
-date: "2024-03-07"
+date: "2025-03-05"
 ---
 
 ## Readings
 
-- ~~{{< fa book >}} Chapter 5 in *Mastering Metrics* (2015) [@AngristPischke:2015]~~
-- ~~{{< fa book >}} Chapter 7 in *Impact Evaluation in Practice* [@wb-eval]~~
 - {{< fa book >}} Chapter 18 in *The Effect* [@Huntington-Klein:2021]
 
 ```{r slides-videos, echo=FALSE, include=FALSE}
@@ -27,7 +25,10 @@ slide_details <- tibble::tribble(
 youtube_list(slide_details, playlist_id)
 ```   
 
-<br>In addition, Videos 51-56 from [this](https://www.youtube.com/watch?v=V6NUeVwHxC4&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=51) playlist accompany Chapter 18 in *The Effect*. Watching them is optional.
+## Optional material
+
+- {{< fa brands youtube >}} Videos 51-56 from [this](https://www.youtube.com/watch?v=V6NUeVwHxC4&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=51) playlist accompany Chapter 18 in *The Effect*. 
+- {{< fa book >}} Chapter 5 in *Mastering Metrics* (2015) [@AngristPischke:2015] accompanies the assigned video. 
 
 ## Slides
 

@@ -2,7 +2,7 @@
 title: "Exam"
 ---
 
-You will take one in-class exam, which serves as an important mid-quarter check of your understanding. The exam will be held during one of our lab sessions. It will be ~~closed-book~~ open-book and without access to the internet. 
+You will take one in-class exam, which serves as an important mid-quarter check of your understanding. The exam will be held during one of our lab sessions. It will be open-book but without access electronic devices or the internet. 
 
 The exam covers the assigned materials, our classes, and your assignments. Here is a rough overview of things you should be familiar with. The exam will not cover "sample size calculations and clustered data".
 

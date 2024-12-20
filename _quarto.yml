@@ -80,11 +80,11 @@ website:
               file: content/02-content.qmd
             - text: "3: Interactions and transformations"
               file: content/03-content.qmd
-            - text: "4: Discrete outcomes and regression adjustment"
+            - text: "4: Regression adjustment and experiments"
               file: content/04-content.qmd
-            - text: "5: Fixed effects, value added, and randomized experiments"
+            - text: "5: Fixed effects, value added, and discrete outcomes"
               file: content/05-content.qmd
-            - text: "6: Sample size calculations and clustered data"
+            - text: "6: Clustered data and sample size calculations"
               file: content/06-content.qmd
             - text: "7: Instrumental variables"
               file: content/07-content.qmd

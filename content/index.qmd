@@ -12,7 +12,11 @@ Each class session has a set of required readings that you should complete ***be
 
 ## Videos 
 
-For some of our classes I will assign short videos. 
+I will assign short videos for some of our classes.
+
+## Optional materials 
+
+For most of the classes, I will provide you with ***optional*** materials. For example, the assigned readings from *The Effect* [@Huntington-Klein:2021] are complemented by videos summarizing the content. Optional means truly optional---while I believe this material can be incredibly helpful, you are not expected to read or watch it before class. 
 
 ## Slides
 
