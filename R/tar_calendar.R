@@ -1,3 +1,4 @@
+suppressPackageStartupMessages(library(lubridate))
 library(glue)
 library(calendar)
 
@@ -11,8 +12,6 @@ save_ical <- function(df, path) {
 # schedule page. Returns a data frame with all rows nested by group to make it
 # easier to display the schedule by group
 build_schedule_for_page <- function(schedule_file) {
-  library(glue)
-
   schedule <- read_csv(schedule_file, show_col_types = FALSE) %>%
     mutate(group = fct_inorder(group)) %>%
     mutate(subgroup = fct_inorder(subgroup)) %>%
@@ -28,9 +27,9 @@ build_schedule_for_page <- function(schedule_file) {
     mutate(var_content = ifelse(!is.na(content),
                                 glue('<a href="{content}.qmd"><i class="fa-solid fa-book-open-reader fa-lg"></i></a>'),
                                 glue('<font color="#e9ecef"><i class="fa-solid fa-book-open-reader fa-lg"></i></font>'))) %>%
-    mutate(var_example = ifelse(!is.na(example),
-                                glue('<a href="{example}.qmd"><i class="fa-solid fa-laptop-code fa-lg"></i></a>'),
-                                glue('<font color="#e9ecef"><i class="fa-solid fa-laptop-code fa-lg"></i></font>'))) %>%
+    mutate(var_resource = ifelse(!is.na(resource),
+                                glue('<a href="{resource}"><i class="fa-solid fa-person-chalkboard fa-lg"></i></a>'),
+                                glue('<font color="#e9ecef"><i class="fa-solid fa-person-chalkboard fa-lg"></i></font>'))) %>%
     mutate(var_assignment = ifelse(!is.na(assignment),
                                    glue('<a href="{assignment}.qmd"><i class="fa-solid fa-pen-ruler fa-lg"></i></a>'),
                                    glue('<font color="#e9ecef"><i class="fa-solid fa-pen-ruler fa-lg"></i></font>'))) %>%
@@ -39,13 +38,13 @@ build_schedule_for_page <- function(schedule_file) {
                              glue('<strong>{format(date, "%B %e")}</strong>–<strong>{format(date_end, "%B %e")}</strong>'))) %>%
     mutate(col_title = glue('{var_title}{var_deadline}{var_note}')) %>%
     mutate(col_content = var_content,
-           col_example = var_example,
+           col_resource = var_resource,
            col_assignment = var_assignment)
 
   schedule_nested <- schedule %>%
     select(group, subgroup,
            ` ` = col_date, Title = col_title, Content = col_content,
-           Example = col_example, Assignment = col_assignment) %>%
+           Slides = col_resource, Assignment = col_assignment) %>%
     group_by(group) %>%
     nest() %>%
     mutate(subgroup_count = map(data, ~count(.x, subgroup)),
@@ -59,9 +58,6 @@ build_schedule_for_page <- function(schedule_file) {
 # Read the schedule CSV file and create a dataset formatted as iCal data that
 # calendar::ic_write() can use
 build_ical <- function(schedule_file, base_url, page_suffix, class_number) {
-  library(glue)
-  library(calendar)
-
   dtstamp <- ic_char_datetime(now("UTC"), zulu = TRUE)
 
   schedule <- read_csv(schedule_file, show_col_types = FALSE) %>%
@@ -71,7 +67,7 @@ build_ical <- function(schedule_file, base_url, page_suffix, class_number) {
            date_end_dt = if_else(is.na(date_end), date_start_dt, date_end)) %>%
     mutate(date_start_cal = map(date_start_dt, ~as.POSIXct(., format = "%B %d, %Y")),
            date_end_cal = map(date_end_dt, ~as.POSIXct(., format = "%B %d, %Y"))) %>%
-    mutate(url = coalesce(content, example, assignment),
+    mutate(url = coalesce(content, resource, assignment),
            url = if_else(is.na(url), glue(""), glue("{base_url}{url}{page_suffix}")))
 
   schedule_ics <- schedule %>%
