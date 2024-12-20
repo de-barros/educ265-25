@@ -3,8 +3,8 @@ library(targets)
 library(tarchetypes)
 suppressPackageStartupMessages(library(tidyverse))
 
-class_number <- "PMAP 8521"
-base_url <- "https://evalsp24.classes.andrewheiss.com/"
+class_number <- "EDUC 265"
+base_url <- "https://educ265.de-barros.com/"
 page_suffix <- ".html"
 
 options(
