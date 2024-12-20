@@ -61,6 +61,8 @@ The pipeline does several major tasks:
 
 This page is largely inspired by [Andrew Heiss's](https://www.andrewheiss.com/) site for his class [Program Evaluation for Public Service](https://github.com/andrewheiss/evalf22.classes.andrewheiss.com) as well as [Matt Blackwell's](https://www.mattblackwell.org/) site for his class [Gov 50](https://github.com/mattblackwell/gov50-f23-site/). If you re-use any of the materials, please respect the licences (see below) and give credit to original authors. 
 
+A huge thanks to my excellent Teaching Assistants [Juan Camilo Cristancho](https://education.uci.edu/phd-cristancho-j.html) and [Tiffany Wu](https://wutiffany.com/). 
+
 I am grateful for additional help and materials from [David Blazar](https://education.umd.edu/directory/david-blazar), [Fiona Burlig](https://www.fionaburlig.com/), [Arja Dayal](https://steinhardt.nyu.edu/arja-dayal), [Pierre de Galbert](https://scholar.harvard.edu/pierredegalbert/home), [Alejandro Ganimian](https://www.alejandroganimian.com/), [Andrew Ho](https://www.gse.harvard.edu/directory/faculty/andrew-ho), [Justine Knebelmann](https://sites.google.com/view/justine-knebelmann/home), [Francisco Lagos](https://education.umd.edu/student-directory/francisco-lagos), [Fernanda Ramirez-Espinoza](https://sites.google.com/site/ramirezespinozafernanda/), and [Carly Robinson](https://www.carlydrobinson.com/).
 
 ## Licenses

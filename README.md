@@ -101,6 +101,10 @@ his class [Gov 50](https://github.com/mattblackwell/gov50-f23-site/). If
 you re-use any of the materials, please respect the licences (see below)
 and give credit to original authors.
 
+A huge thanks to my excellent Teaching Assistants [Juan Camilo
+Cristancho](https://education.uci.edu/phd-cristancho-j.html) and
+[Tiffany Wu](https://wutiffany.com/).
+
 I am grateful for additional help and materials from [David
 Blazar](https://education.umd.edu/directory/david-blazar), [Fiona
 Burlig](https://www.fionaburlig.com/), [Arja
