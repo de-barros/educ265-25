@@ -32,7 +32,7 @@ withr::with_dir(here::here(), {
 - [{{< fa user >}}]{.fa-li} [{{< var instructor.name_no_title >}}]({{< var instructor.url >}})
 - [{{< fa university >}}]{.fa-li} {{< var instructor.office >}}
 - [{{< fa envelope >}}]{.fa-li} <a href='mailto:{{< var instructor.email >}}'>{{< var instructor.email >}}</a>
-- [{{< iconify ph butterfly-bold size=1.2em title='Bluesky' >}}]{.fa-li} [Bluesky]({{< var instructor.bluesky >}})
+- [{{< iconify fa6-brands bluesky size=1.1em title='Bluesky' >}}]{.fa-li} [Bluesky]({{< var instructor.bluesky >}})
 - [{{< fa calendar-check >}}]{.fa-li} [Schedule an appointment]({{< var instructor.appointment_url >}})
 :::
 

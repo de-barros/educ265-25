@@ -22,7 +22,7 @@ opts_theme <- function(x) {
 - [{{< fa user >}}]{.fa-li} [{{< var instructor.name_no_title >}}]({{< var instructor.url >}})
 - [{{< fa university >}}]{.fa-li} {{< var instructor.office >}}
 - [{{< fa envelope >}}]{.fa-li} <a href='mailto:{{< var instructor.email >}}'>{{< var instructor.email >}}</a>
-- [{{< iconify ph butterfly-bold size=1.2em title='Bluesky' >}}]{.fa-li} [Bluesky]({{< var instructor.bluesky >}})
+- [{{< iconify fa6-brands bluesky size=1.1em title='Bluesky' >}}]{.fa-li} [Bluesky]({{< var instructor.bluesky >}})
 - [{{< fa calendar-check >}}]{.fa-li} [Schedule an appointment]({{< var instructor.appointment_url >}})
 :::
 
@@ -155,7 +155,7 @@ This course will expose you to Stata—one of the most popular statistical progr
 
 You may use UCI's [Virtual Computing Lab](https://uci.apporto.com/) to access Stata for free. 
 
-There are tons of online resources to help you with Stata. Three of the most important are [UCLA's Stata training site](https://stats.idre.ucla.edu/stata/seminars/notes15), the [Statalist](https://www.statalist.org/) forum, and  [StackOverflow](https://stackoverflow.com/) (a Q&A site with hundreds of thousands of answers to all sorts of programming questions). Also, ChatGPT will sometimes fool you but, as it was likely [trained on and (is quickly replacing) StackOverflow](https://www.linkedin.com/posts/tom-alder_the-irony-is-crushing-stack-overflows-activity-7099208596369903616-EQH6), it is quite good at writing Stata code.
+There are tons of online resources to help you with Stata. Three of the most important are [UCLA's Stata training site](https://stats.idre.ucla.edu/stata/seminars/notes15), the [Statalist](https://www.statalist.org/) forum, and  [StackOverflow](https://stackoverflow.com/) (a Q&A site with hundreds of thousands of answers to all sorts of programming questions). Also, ChatGPT will sometimes fool you but, as it was likely [trained on (and is quickly replacing) StackOverflow](https://www.linkedin.com/posts/tom-alder_the-irony-is-crushing-stack-overflows-activity-7099208596369903616-EQH6), it is quite good at writing Stata code.
 
 An the [resources page](/resource/index.html), you will find a long list of additional resources. All of this is *way too much information*, but certainly good to have as a backup for any of your future work after our course. And, if all of this sounds overwhelming, don't worry. **Once we get to it, I will point you to all the materials you do need.**
 
@@ -193,7 +193,7 @@ This feedback is very important to me, and I appreciate your input.
 
 ### Exam
 
-You will also take one in-class exam, which serves as an important mid-quarter check of your understanding. This exam will be held during one of our lab sessions. It will be closed book and without access to the internet. I will provide more information about the exam as it approaches. 
+You will also take one in-class exam, which serves as an important mid-quarter check of your understanding. This exam will be held during one of our lab sessions. It will be open book (but without access to electronic devices). I will provide more information about the exam as it approaches. 
 
 ### Your final paper
 

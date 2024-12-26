@@ -6,7 +6,7 @@ date: "2025-01-29"
 ## Readings
 
 - {{< fa book >}} Chapters 1-2 in *Mastering Metrics* [@AngristPischke:2015]
-- {{< fa book >}} Chapters 8-10 in *The Effect* [@Huntington-Klein:2021]
+- {{< fa book >}} Chapters 9-10 in *The Effect* [@Huntington-Klein:2021]
 
 ```{r slides-videos, echo=FALSE, include=FALSE}
 source(here::here("R", "slide-things.R"))
@@ -32,7 +32,7 @@ youtube_list(slide_details, playlist_id)
 
 ## Optional material
 
-- {{< fa brands youtube >}} Videos 16-23 from [this](https://www.youtube.com/watch?v=aB8uyjiNnk8&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=16) playlist accompany Chapters 8-10 in *The Effect*.
+- {{< fa brands youtube >}} Videos 19-23 from [this](https://www.youtube.com/watch?v=a6pne1pdLQw&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=19) playlist accompany Chapters 9-10 in *The Effect*.
 - {{< fa file-pdf >}} *Unobservable Selection and Coefficient Stability: Theory and Evidence* (feel free to skim or skip Sections 3.2 and 3.3) [@oster_unobservable_2019]
 
 ## Slides

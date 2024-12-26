@@ -6,12 +6,12 @@ date: "2025-01-08"
 ## Readings
 
 - {{< fa file-pdf >}} *The Taboo Against Explicit Causal Inference in Nonexperimental Psychology* [@grosz_taboo_2020]
-- {{< fa book >}} Chapters 4-7 in *The Effect* [@Huntington-Klein:2021]
-- {{< fa book >}} Chapter 3 in *Impact Evaluation in Practice* [@wb-eval]
+- {{< fa book >}} Chapters 4-8 in *The Effect* [@Huntington-Klein:2021]
 
 ## Optional material
 
-- {{< fa brands youtube >}} Videos 6-15 from [this](https://www.youtube.com/watch?v=9lqEgGwphzg&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=6) playlist accompany Chapters 4-7 in *The Effect*.
+- {{< fa brands youtube >}} Videos 6-18 from [this](https://www.youtube.com/watch?v=9lqEgGwphzg&list=PLVE5MzKQzt70JVDAmY42q9XR_V9oDUCyo&index=6) playlist accompany Chapters 4-8 in *The Effect*.
+- {{< fa book >}} Chapter 3 in *Impact Evaluation in Practice* [@wb-eval]
 
 ## Slides
 

@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 6fcd9296-1311-4422-a173-9161da263630
+      url: 'https://educ265.de-barros.com'

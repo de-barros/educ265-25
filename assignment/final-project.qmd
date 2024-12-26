@@ -1,6 +1,6 @@
 ---
 title: "Final project"
-date: "2024-03-22"
+date: "2025-03-21"
 ---
 
 For the final course project, you will produce a short paper that uses regression analysis to investigate a causal relationship. You may either (a) write a replication paper and present extensions to an existing study or (b) write a research paper that uses your own data. Throughout the quarter, there will be two milestones related to the paper. 
