@@ -9,6 +9,7 @@
 
 _targets.yaml
 
+slides/
 slides/*.pdf
 slides/*.html
 slides/**/*_cache/*
